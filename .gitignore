@@ -10,3 +10,5 @@ next-env.d.ts
 # Rakip sitenin WooCommerce ürün export'u — sadece ilham/analiz için kullanıldı,
 # üçüncü tarafa ait katalog verisi olduğu için repoya taşınmıyor.
 wc-product-export-*.csv
+
+.vercel
