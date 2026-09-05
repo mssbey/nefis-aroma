@@ -1,0 +1,77 @@
+'use client';
+
+import { useMemo, useState } from 'react';
+import type { Product, VariantIntensity, VariantVolume } from '@/types';
+import { Gallery } from './Gallery';
+import { PurchasePanel } from './PurchasePanel';
+import { uniqueOptions, resolveVariant } from '@/lib/commerce';
+import { useCart } from '@/store/cart';
+import { useUI } from '@/store/ui';
+import { toast } from '@/store/toast';
+import { currency } from '@/lib/site';
+
+export function ProductDetailClient({ product }: { product: Product }) {
+  const { volumes, intensities } = uniqueOptions(product);
+  const [volume, setVolume] = useState<VariantVolume>(volumes[0] as VariantVolume);
+  const [intensity, setIntensity] = useState<VariantIntensity>(intensities[0] as VariantIntensity);
+  const [qty, setQty] = useState(1);
+
+  const variant = useMemo(
+    () => resolveVariant(product, { volume, intensity }),
+    [product, volume, intensity],
+  );
+
+  const galleryImages = useMemo(() => {
+    const variantImg = { src: variant.image, alt: `${product.name} — ${variant.volume}` };
+    const rest = product.gallery.filter((g) => g.src !== variant.image);
+    return [variantImg, ...rest];
+  }, [variant, product]);
+
+  const add = useCart((s) => s.add);
+  const openCart = useUI((s) => s.openCart);
+  const soldOut = variant.stock === 'out-of-stock';
+
+  return (
+    <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
+      <Gallery images={galleryImages} productName={product.name} activeHint={variant.id} />
+      <PurchasePanel
+        product={product}
+        variant={variant}
+        volume={volume}
+        intensity={intensity}
+        qty={qty}
+        onVolume={(v) => {
+          setVolume(v);
+          setQty(1);
+        }}
+        onIntensity={(v) => {
+          setIntensity(v);
+          setQty(1);
+        }}
+        onQty={setQty}
+      />
+
+      {/* Mobil sabit sepete ekle çubuğu */}
+      <div className="fixed inset-x-0 bottom-[58px] z-[70] border-t border-purple-100 bg-cream/95 p-3 backdrop-blur-lg safe-bottom lg:hidden">
+        <div className="flex items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-xs font-semibold text-purple-900">{product.name}</p>
+            <p className="text-sm font-bold text-purple-800">{currency(variant.price * qty)}</p>
+          </div>
+          <button
+            type="button"
+            disabled={soldOut}
+            onClick={() => {
+              add(product.id, variant.id, qty);
+              openCart();
+              toast.success('Sepete eklendi', product.name);
+            }}
+            className="btn-primary px-5 py-2.5 text-sm disabled:opacity-40"
+          >
+            {soldOut ? 'Tükendi' : 'Sepete Ekle'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

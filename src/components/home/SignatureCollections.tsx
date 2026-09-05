@@ -1,0 +1,56 @@
+import Link from 'next/link';
+import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
+import { collections } from '@/data/categories';
+import { productsByCollection } from '@/data/products';
+import { SectionHeading, Reveal } from '@/components/ui/Reveal';
+
+export function SignatureCollections() {
+  return (
+    <section className="section container-page">
+      <SectionHeading
+        eyebrow="Signature Collections"
+        title="Nefis Aroma’ya özel üç seçki"
+        description="Her koleksiyonun kendi atmosferi, hikâyesi ve seçilmiş ürünleri var."
+      />
+
+      <div className="mt-10 space-y-5">
+        {collections.map((c, i) => {
+          const count = productsByCollection(c.slug).length;
+          return (
+            <Reveal key={c.slug} delay={i * 0.06}>
+              <Link
+                href={`/koleksiyon/${c.slug}`}
+                className="group grid overflow-hidden rounded-[var(--radius-card)] border border-purple-100 bg-white shadow-soft transition-shadow hover:shadow-lift md:grid-cols-[1.1fr_1fr]"
+              >
+                <div className="relative aspect-[16/10] md:aspect-auto">
+                  <Image
+                    src={c.cover}
+                    alt={c.name}
+                    fill
+                    sizes="(max-width:768px) 100vw, 45vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  />
+                </div>
+                <div className="flex flex-col justify-center gap-3 p-6 sm:p-9">
+                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500">
+                    {String(i + 1).padStart(2, '0')} · {count} ürün
+                  </span>
+                  <h3 className="font-display text-2xl font-semibold text-purple-900 sm:text-3xl">
+                    {c.name}
+                  </h3>
+                  <p className="text-sm font-medium text-purple-600">{c.subtitle}</p>
+                  <p className="text-sm leading-relaxed text-ink-soft">{c.description}</p>
+                  <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-purple-700">
+                    Koleksiyonu keşfet
+                    <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+                  </span>
+                </div>
+              </Link>
+            </Reveal>
+          );
+        })}
+      </div>
+    </section>
+  );
+}

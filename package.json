@@ -1,0 +1,43 @@
+{
+  "name": "nefis-aroma",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "gen:images": "python scripts/generate_images.py",
+    "qa:console": "node scripts/qa-console.mjs",
+    "qa:interactions": "node scripts/qa-interactions.mjs",
+    "qa:responsive": "node scripts/qa-responsive.mjs"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "embla-carousel-react": "^8.5.2",
+    "framer-motion": "^11.18.0",
+    "lucide-react": "^0.474.0",
+    "next": "^16.3.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "sharp": "^0.35.4",
+    "tailwind-merge": "^2.6.0",
+    "zod": "^3.24.1",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/node": "^22.10.7",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.18.0",
+    "eslint-config-next": "^16.3.4",
+    "postcss": "^8.5.1",
+    "puppeteer-core": "^25.10.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3"
+  }
+}

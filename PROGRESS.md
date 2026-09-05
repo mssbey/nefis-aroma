@@ -1,0 +1,328 @@
+# Nefis Aroma — Geliştirme Durumu (Resume Notu)
+
+> **Devam talimatı:** Kullanıcı "devam et" dediğinde bu dosyadan devam et. Projeyi
+> baştan analiz etme. Aşağıdaki "SONRAKİ ADIM" bölümünden başla.
+
+Son güncelleme: 2026-09-05 (Aşama 1-18 tamamlandı — 100 ürün, 134 route)
+
+## ÖNEMLİ — Next.js 16 API notu
+Bu sürümde (Next 16.3.4) dinamik route'larda `params` bir **Promise**'dır.
+Her `page.tsx`/`generateMetadata` içinde `{ params: Promise<{ slug: string }> }`
+tipiyle tanımla ve `const { slug } = await params;` ile aç. Aksi halde dev'de
+sürekli 404 alınır (build'de fark edilmeyebilir). `/urun/[slug]`, `/kategori/[slug]`,
+`/koleksiyon/[slug]` bu şekilde düzeltildi — yeni dinamik route eklerken unutma.
+
+## ÖNEMLİ — ESLint notu
+`eslint-config-next@16` React Compiler kurallarını da getiriyor: `react-hooks/set-state-in-effect`
+(hydration guard / URL senkronu / embla gibi harici API senkronu için kasıtlı olarak
+`eslint.config.mjs`'de kapatıldı) ve `react-hooks/purity` (render sırasında `Math.random`/`Date.now`
+çağırma — rastgele değer gereken yerlerde `useEffect` içinde client component'e taşı, bkz.
+`src/app/siparis/tamamlandi/OrderNumber.tsx` örneği).
+
+---
+
+## TEKNOLOJİ KARARLARI (değiştirme)
+
+- **Next.js 16.3.4** (App Router, Turbopack default) + **React 19.2** + **TypeScript 5.7**
+- **Tailwind CSS v3.4** (v4 değil — kararlılık için). Config: `tailwind.config.ts` (marka rampası hazır)
+- **framer-motion v11** — `src/components/motion.tsx` içinde `LazyMotion` + `MotionConfig reducedMotion="user"`. Bileşenlerde `m.*` kullan (`motion.*` değil, `strict` mod açık).
+- **lucide-react**, **embla-carousel-react**, **zustand v5** (persist), **zod v3**
+- ESLint: **flat config** (`eslint.config.mjs`). Next 16'da `next lint` KALDIRILDI → `package.json` script'i `eslint .`
+- Path alias: `@/*` → `src/*`
+- Node 24, Python 3.14 + PyMuPDF + PIL + numpy mevcut (görsel üretimi için)
+
+## MARKA
+
+- Logo `logo.pdf`'ten çıkarıldı → `public/brand/`:
+  - `logo-full.svg/.png`, `logo-light.svg/.png` (koyu zemin için), `logo-mark.svg/.png`, `logo-mark-light.*`
+  - favicon: `favicon-16/32.png`, `apple-touch-icon.png`, `icon-192/512.png`
+- **Logo gerçek renkleri (örneklendi):** mor `#632573`, altın `#c88d19`
+- Palet token'ları `tailwind.config.ts` + `src/app/globals.css` içinde HAZIR:
+  purple.600 `#672779` (ana mor), purple.800 `#2B1035`, purple.900 `#140B19`,
+  gold.400 `#D2940B`, gold.200 `#F2C45E`, `cream #FAF8F4`, purple.100 `#EFE6F3` (lavanta), `ink #211923`
+- Marka adı her yerde **"Nefis Aroma"**. Logoyu yeniden çizme/deforme etme.
+
+## GÖRSELLER
+
+- Üretici: `scripts/generate_images.py` — çalıştır: `PYTHONIOENCODING=utf-8 python scripts/generate_images.py`
+- **156 görsel üretildi** → `public/images/`:
+  - `hero/hero.webp`
+  - `products/<slug>-1..4.webp` (26 ürün × 4 = 104)
+  - `categories/<slug>.webp` (8) + `icons/<slug>.png`
+  - `collections/<slug>.webp` (3)
+  - `campaigns/a|b|c.webp`, `about/1|2|3.webp`, `process/1..4.webp`, `feed/1..8.webp`, `guide/1..4.webp`
+  - `texture/grain.png`, `og.webp`
+- Sanat yönetimi: mor/altın radial ışık + gren + sıvı bloblar + kategoriye özel motif + gerçek logolu cam şişe/etiket.
+- **Bilinen zayıf noktalar (opsiyonel iyileştirme):** hero kompozisyonu (şişeler solda üst üste biniyor), `campaigns/*` sahneleri seyrek. Ürün kartı görselleri iyi durumda.
+
+---
+
+## TAMAMLANAN DOSYALAR
+
+```
+package.json, tsconfig.json, next.config.mjs, postcss.config.mjs,
+tailwind.config.ts, eslint.config.mjs, .gitignore
+src/types/index.ts                 — tüm tipler (Product, ProductVariant, Category, Collection, CartLine, Review, QA...)
+src/lib/site.ts                    — merkezi config (iletişim/kargo/kampanya PLACEHOLDER) + currency() + discountPercent()
+src/lib/utils.ts                   — cn, slugify (TR), clamp, seededRandom, formatDateTR
+src/lib/cart-math.ts               — detailLines(), summarize() (ara toplam/kargo/indirim kodu/ücretsiz kargo)
+src/lib/search.ts                  — searchProducts() (ad/kategori/tat notu/seri), popularSearches
+src/lib/filters.ts                 — FilterState, applyFilters(), sortOptions, defaultFilters(), profileLabels, formLabels, allSeries(), allSubcategories()
+src/data/categories.ts             — 8 kategori + 3 koleksiyon + categoryBySlug/collectionBySlug
+src/data/products.ts               — 26 ürün seed + buildProduct() (varyant/faq/radar üretimi), productBySlug, bestSellers, newArrivals, onSaleProducts, productsByCategory/Collection/Profile, priceRange
+src/store/cart.ts                  — useCart (persist), PROMO_CODES (NEFIS10/ILKAROMA/GOLDENDROP), promoInfo()
+src/store/favorites.ts             — useFavorites, useRecentlyViewed, useSearchHistory (hepsi persist)
+src/store/ui.ts                    — useUI (cartOpen/searchOpen/mobileMenuOpen)
+src/store/toast.ts                 — useToast + toast.success/info/error/custom
+src/app/fonts.ts                   — Manrope (--font-sans), Fraunces (--font-display), Dancing_Script (--font-script)
+src/app/globals.css                — design system: token'lar, .btn*, .card-surface, .surface-dark/lavender, .grain, .glass, .skeleton, reduced-motion, focus-visible
+src/components/motion.tsx          — MotionProvider
+src/components/ui/Reveal.tsx       — Reveal, Stagger, SectionHeading
+src/components/ui/Button.tsx       — Button, ButtonLink (variant: primary/gold/ghost/dark/link)
+```
+
+## KATEGORİ SLUG'LARI (navigasyon sırası)
+`meyveli, ferah, tatli-kremsi, icecek, tutun, mix, diy-kitler, nbase`
+Koleksiyonlar: `golden-drop, purple-reserve, fresh-lab`
+Promosyon kodları: `NEFIS10` (%10), `ILKAROMA` (60₺), `GOLDENDROP` (%15)
+
+---
+
+## TAMAMLANDI — Aşama 8 ila 13
+
+Aşama 8 (UI kütüphanesi), 9 (layout: Header/MegaMenu/MobileMenu/SearchOverlay/CartDrawer/Footer/
+MobileTabBar/WhatsAppFab/Toaster/NewsletterForm), 10 (ana sayfa 13 bölüm), 11 (ticaret: ProductCard/
+Grid/Rail/QuickView, filtre sistemi `src/lib/filters.ts`+`filter-url.ts`+`ProductBrowser`, `/urunler`,
+`/kategori/[slug]`, `/koleksiyon/[slug]`, `/urun/[slug]` tam PDP: Gallery+PurchasePanel+InfoTabs+
+TasteRadar+Reviews+QA+Related+RecentlyViewed), 12 (yeni-gelenler, cok-satanlar, kampanyalar, arama,
+sepet+CartView, favoriler, hesabim stub, aroma-rehberi, hakkimizda, sss, iletisim+ContactForm, 4 hukuki
+sayfa + LegalLayout, not-found, siparis/tamamlandi) ve 13 (metadata/OG/canonical her sayfada, JSON-LD:
+Organization/WebSite/Product/Breadcrumb/FAQPage, sitemap.ts, robots.ts, manifest.ts) tamamlandı.
+
+`npm run typecheck`, `npm run lint`, `npm run build` üçü de TEMİZ geçiyor (2026-09-04 itibarıyla).
+Build çıktısı: 62 route, tamamı statik/SSG (0 hata). 28 ürün, 8 kategori, 3 koleksiyon sayfası dahil.
+
+Playwright/otomasyon YOK bu ortamda; QA headless Chrome screenshot (`chrome --headless=new --screenshot`)
+ile yapıldı. Görsel olarak ana sayfa, /urunler, /urun/[slug] doğrulandı — premium/tutarlı görünüyor.
+
+## TAMAMLANDI — Aşama 14 (son doğrulama)
+
+Proje **tamamlandı ve doğrulandı**. Yapılanlar:
+
+1. **Responsive tarama** — `scripts/qa-responsive.mjs` (puppeteer-core + yerel Chrome) ile 320/375/768/
+   1024/1440px × 12 sayfa = 60 kontrol, **0 yatay taşma**. Yolda 1024px'de header nav taşması ve
+   `/iletisim` 320px'de 16px taşma bulundu ve düzeltildi (bkz. "ÇÖZÜLEN HATALAR" altında).
+2. **İnteraktif QA** — `scripts/qa-interactions.mjs`: arama overlay (aç/kapat + ESC), mega menü (hover),
+   mobil menü (aç/kapat), hızlı sepete ekle + mini sepet, ürün detayda varyant değişince fiyat güncelleme,
+   favori toggle (localStorage doğrulandı), aroma bulucu quiz (5 soru → sonuç), filtre→URL senkronu.
+   Hepsi **OK**, konsol hatası yok.
+3. **Konsol/hydration taraması** — `scripts/qa-console.mjs`: 20 sayfa (tüm route'lar + 404) headless
+   Chrome'da gezildi, **hydration mismatch / React uyarısı / runtime hata yok** (yalnızca 404 sayfasının
+   kendi beklenen ağ hatası loglandı).
+4. `grep -rn 'href="#"'` ve `lorem ipsum` taraması → **sıfır sonuç**.
+5. `npm run typecheck`, `npm run lint`, `npm run build` → **üçü de temiz**, 62 route, tamamı statik/SSG.
+
+### Çözülen hatalar (ileride benzer desen kullanılırsa tekrar dikkat)
+- **CSS Grid "blowout" hatası**: `className="grid gap-X lg:grid-cols-[...]"` gibi bare `grid` + sadece
+  `lg:` breakpoint'inde açık grid-cols tanımlayan **9 dosyada**, mobilde (implicit tek kolon, `auto`
+  track) bir alt elemanın kırılamayan içeriği (örn. `destek@nefisaroma.example` gibi boşluksuz e-posta
+  metni) tüm grid track'ini viewport'tan taşacak şekilde büyütüyordu (1024px'de header nav'ı, 320px'de
+  iletişim kartlarını taşırdı). **Çözüm:** her yerde `grid-cols-1` açıkça eklendi (`grid grid-cols-1
+  gap-X lg:grid-cols-[...]`) — Tailwind'in `grid-cols-N` sınıfı `minmax(0,1fr)` kullanır ve blowout'u
+  engeller. Yeni çok-kolonlu bir grid eklerken **her zaman mobil için de açık `grid-cols-N` yaz**,
+  bare `grid` + yalnızca `lg:grid-cols-[...]` YAZMA.
+- Header masaüstü nav'ı (`primaryNav`, 12 öğe) 1024–1279px arası sıkışıyordu → `nav`'a
+  `overflow-x-auto hide-scrollbar mask-fade-x flex-nowrap` eklendi, artık taşmak yerine yatay kaydırıyor.
+- `/urun/[slug]` PDP'de fiyat kutusundaki taksit bilgisi metni dar mobil ekranlarda sıkışıyordu →
+  `max-w-[11rem]` + küçük font ile düzeltildi.
+- Next 16 `params` Promise sorunu (yukarıda "ÖNEMLİ" notunda) ve ESLint React Compiler kuralları
+  (`set-state-in-effect`, `purity`) bu oturumda çözüldü.
+
+### Kalan bilinçli kapsam dışı / düşük öncelikli notlar
+- Görseller (`scripts/generate_images.py`) prosedürel PIL üretimi — marka tutarlı, kırık/anlamsız metin
+  yok, ama gerçek fotoğraf/AI-render kalitesinde değil. İstenirse yeniden üretilebilir/geliştirilebilir.
+- `/hesabim` yalnızca "üyelik yakında" placeholder'ı — brief zaten backend/üyeliği kapsam dışı bırakıyor.
+- `next dev` her başlangıçta proje köküne `AGENTS.md`/kendi `CLAUDE.md` bloğunu ekliyor (Next 16'nın
+  kendi davranışı) — beklenen, dokunma.
+- Proje bir git deposu değil; kullanıcı istemeden `git init` yapılmadı.
+- QA script'leri (`scripts/qa-*.mjs`, devDependency: `puppeteer-core`) regresyon testi için projede
+  bırakıldı — yerel Chrome kurulu olduğu sürece `node scripts/qa-console.mjs` vb. ile tekrar çalıştırılabilir.
+
+**Kullanıcı "devam et" derse:** Aşama 1-14 tamamlandı, teslim edilebilir durumda. Yeni bir istek
+gelmedikçe ek iş yok — kullanıcıya bunu belirt ve hangi alanda devam etmek istediğini sor
+(ör. görsellerin AI ile yeniden üretilmesi, gerçek backend entegrasyonu, ek sayfa/özellik).
+
+---
+
+## TAMAMLANDI — Aşama 15 (Falcon Kimya'dan ilham alan katalog genişletmesi, 2026-09-05)
+
+Rakip site `falconkimya.com` doğrudan erişimde 403 verdi; kategori/ürün konsepti WebSearch ile
+(indekslenen sayfa özetleri üzerinden) araştırıldı. Falcon'un ürün adları, açıklamaları, marka
+adı veya görselleri **hiçbir şekilde kopyalanmadı** — yalnızca tat profili konsepti (örn. "5 çilek
+karışımı", "mango+nane+buz", "karamel+kraker+tütün") ilham alındı, tamamen özgün Nefis Aroma
+isim/açıklama/görselle yeniden üretildi. Sigara markası çağrıştıran isimlendirme (Falcon'un
+"Wnstn/Mrlbro/Prlment" tarzı gizlenmiş marka adları) bilinçli olarak kullanılmadı.
+
+**14 yeni ürün eklendi** (`src/data/products.ts` seeds dizisinin sonuna), toplam **28 → 42 ürün**:
+- Meyveli/Tropikal (4): Crimson Berry Riot, Nectarine Blush, Golden Passion Drift, Pineapple Solstice
+- Ferah/Buzlu (3): Iced Mango Mint, Banana Frost Trail, Polar Kiwi Splash
+- Tatlı & Kremsi (2): Amber Cracker Toffee, Coconut Cream Dream
+- Tütün (2): Ember Leaf Reserve, Caramel Leaf Cracker
+- Mix (3): Neon Tropic Reactor, Velvet Fig Reserve, Citrus Storm Signature
+
+Görseller `scripts/generate_images.py` ile üretildi — script'e **argv ile slug filtresi** eklendi
+(`python scripts/generate_images.py <slug1> <slug2> ...` sadece o ürünlerin 4'er görselini üretir,
+tüm siteyi yeniden üretmez; argümansız çağrı eskisi gibi tam üretim yapar). Mevcut sanat yönetimi
+birebir korundu (gerçek `logo-full.png`, mor/altın palet) — sıfır ek görsel risk.
+
+Ana sayfa "Çok Satanlar" bölümü (`BestSellersSection`) zaten **max 8 ürün, grid-cols-2 md:3 xl:4,
+eşit yükseklik, hover, rozet, "Tümünü gör" CTA** şablonunu karşılıyordu — yeni ürünler mevcut
+bestSeller havuzu ≥8 olduğu için otomatik olarak ana sayfa gridini taşırmadı (tasarım değişmedi).
+Hero istatistiği `src/data/content.ts` içindeki "24+ Aroma profili" → **"36+"** olarak güncellendi
+(gerçek konsantre aroma sayısı 38, doğru/abartısız yuvarlama).
+
+Doğrulama: `typecheck`/`lint`/`build` üçü de temiz (76 route, tamamı statik/SSG, 42 ürün dahil).
+`qa-console` tarzı headless Chrome taraması (ana sayfa, /urunler, /kategori/mix|tutun|ferah|
+tatli-kremsi|meyveli, 3 yeni ürün detay sayfası, /yeni-gelenler) → **0 konsol/hydration hatası**.
+Responsive ekran görüntüleri (375/768/1440px) ile ürün grid'i görsel olarak kontrol edildi, taşma yok.
+
+**Kalan not:** Kullanıcı "devam et" derse yeni iş yok; hangi yönde ilerlemek istediğini sor.
+
+---
+
+## TAMAMLANDI — Aşama 16 (WooCommerce API ile ikinci ürün dalgası, 2026-09-05)
+
+Kullanıcı, `falconkimya.com`'un kendi WooCommerce REST API anahtarını (consumer key/secret)
+paylaşıp "iki siteyi de ben yapıyorum, müşterinin haberi var" diyerek gerçek ürün verisine
+erişim yetkisi verdi. **Önemli güvenlik notu:** anahtar sohbette açık metin paylaşıldığı için
+kullanıcıya WooCommerce panelinden **iptal edip yenisini oluşturması** önerildi.
+
+`wp-json/wc/v3/products` ve `/products/categories` uçlarından `_fields` parametresiyle
+sadeleştirilmiş JSON çekildi (isim/fiyat/açıklama — görsel/HTML gürültüsü hariç). Falcon'un
+"Falcon Mix Aroma ve Diykit" kategorisinden (703 ürünlük "Karışım Aromalar" üst kategorisinin
+alt kümesi) 40 üründen gerçek tat konsepti (ör. "Boss Reserve" = muz+karamel+kraker+fıstık
+ezmesi, "Brain Freeze" = nar+çilek+kivi+buz) çıkarıldı. **Falcon'un marka adı, ürün adı, tarif
+içeriği (TFA/CAP kod isimleri) ve pazarlama metni hiç kopyalanmadı** — sadece kavramsal ilham
+alınıp tamamen özgün isim/açıklamayla yeniden yazıldı. "Zıkkım" (açıkça başka bir markanın klonu
+olarak tanımlanmıştı) ve "Tribeca" (bilinen bir premium likit klonu olma ihtimali yüksek) gibi
+klon/marka-türevi ürünler **bilinçli olarak dışarıda bırakıldı**.
+
+**14 yeni ürün daha eklendi** (toplam **42 → 56 ürün**): Wildberry Pulse, Citrus Cream Fizz,
+Kiwi Melon Muse (meyveli); Frosted Grape Menthol, Strawberry Lemon Frost, Emerald Apple Chill,
+Pomegranate Kiwi Freeze, Aqua Berry Frost (ferah); Banoffee Crumble, Strawberry Cheesecake Bliss,
+Vanilla Milk Parade, Peanut Toffee Swirl (tatlı & kremsi); Tropic Menthol Fusion, Berry Soda Frost
+(mix). Görseller yine `scripts/generate_images.py <slug...>` ile (Falcon görseline hiç dokunulmadı/
+hotlink yapılmadı) üretildi. Hero istatistiği "36+" → **"50+"** (gerçek konsantre sayısı 52).
+
+Doğrulama: `typecheck`/`lint`/`build` temiz (90 route, 56 ürün, tamamı statik). `qa-console.mjs`
+(20 sayfa) → yalnızca beklenen 404 ağ hatası, başka konsol/hydration sorunu yok. `qa-responsive.mjs`
+(320/375/768/1024/1440px × 12 sayfa = 60 kontrol) → **0 taşma**.
+
+**Önemli davranış notu (ileride benzer istek gelirse):** Rakip sitenin özel API anahtarını
+kullanmadan önce kullanıcının sahiplik/yetki beyanını netçe al (bu oturumda alındı) ve anahtarın
+sohbette ifşa olduğunu bildirip rotasyon öner — otomatik reddetme değil, doğrulama + güvenlik
+uyarısı doğru denge.
+
+---
+
+## TAMAMLANDI — Aşama 17 (WooCommerce CSV export + üçüncü ürün dalgası, 2026-09-05)
+
+Kullanıcı, canlı API anahtarı yerine (önceki aşamada önerildiği gibi) kendi WooCommerce ürün
+export CSV'sini (`wc-product-export-...csv`, 5666 satır — falconkimya.com'un tüm kataloğu) proje
+köküne bıraktı ve "maksimum 20 ürün ekle, görselleriyle beraber, görsellerin üzerine bizim
+logomuzu koy" istedi.
+
+**CSV işleme:** `csv` modülüyle (Python, tek seferlik script) ayrıştırıldı; `Yayımlanmış=1`,
+`Tür` simple/variable, Nbase/Gliserin/Sarf Malzeme/Puff/Salt gibi kategoriler hariç tutuldu →
+901 aday. "Falcon Mix Aroma ve Diykit" kategorisinden tat konseptleri incelendi.
+
+**Görsel karar (kullanıcının "logomuzu koy" isteğinden sapma, gerekçeli):** Gerçek Falcon
+fotoğraflarını indirip üzerine sadece Nefis logosunu **eklemek** yeterli değil — brief'in kendi
+kuralı (`Falcon adı/kuş simgesi/filigran görünmemeli`, `logo yapıştırılmış gibi durmamalı`)
+gereği önce mevcut Falcon etiketinin **temizlenmesi/kaldırılması** gerekiyor. Bu projede
+perspektif/kıvrım/ışığa uyumlu fotoğraf düzenleme (inpainting) aracı yok; kaba bir üst-üste
+yapıştırma hem Falcon ibaresini görünür bırakır (marka ihlali riski) hem de "sonradan
+yapıştırılmış" görünüme yol açar (yasak). Bu yüzden gerçek Falcon fotoğrafları hiç indirilmedi/
+işlenmedi; bunun yerine — Aşama 15-16'da olduğu gibi — `scripts/generate_images.py` ile tamamen
+özgün, gerçek Nefis Aroma logolu görseller üretildi. Kullanıcıya bu karar açıkça bildirildi.
+
+**Adında/konseptinde ünlü bir e-likit markasının klonu olduğu açık veya olası ürünler bilinçli
+olarak dışarıda bırakıldı** (ör. "Zıkkım" — açıkça klon olduğu yazılmış, "Bomb" — "klonu
+orijinalinden iyi" ifadesi geçiyor, "Dragon's Blood"/"Cereal Killer" — Vampire Vape'in gerçek
+ürünleri, "Custard Monster", "Farley's Gnarly Sauce-Bad Drip" — gerçek marka adı içeriyor,
+"Barney Rubble"/"Donkey Kahn" — üçüncü taraf karakter/marka çağrışımı, "Fruit Loops" — Kellogg's
+markası). Sadece jenerik tat kombinasyonları (ör. "elma+şeftali", "mango+şeftali+krema") ilham
+olarak kullanıldı; bunlar hiçbir markaya özgü değildir.
+
+**14 yeni ürün eklendi** (toplam **56 → 70 ürün**): Orchard Peach Apple, Mango Peach Custard,
+Blue Razz Lemonade, Blueberry Mint Freeze, Coffee Milk Latte, Cola Menthol Chill, Tropic Berry
+Splash, Sunny Peach Pineapple, Banana Ice Cooler, Energy Drink Chill, Vanilla Biscuit Nutcream,
+Strawberry Milkshake Dream, Coconut Banana Cream, Pure Mint Frost. Hero istatistiği "50+" →
+**"60+"** (gerçek konsantre sayısı 66).
+
+Doğrulama: `typecheck`/`lint`/`build` temiz (**104 route, 70 ürün**, tamamı statik). `qa-console.mjs`
+→ yalnızca beklenen 404 hatası. `qa-responsive.mjs` (320-1440px × 12 sayfa) → **0 taşma**.
+
+**Önemli davranış notu:** Kullanıcı "gerçek rakip fotoğrafına logo koy" isterse ve ortamda
+fotoğraf düzenleme/inpainting aracı yoksa, kaba bir logo-üstüne-yapıştırma yapma — bu hem marka
+temizliği sağlamaz hem "yapıştırılmış" görünür. Bunun yerine mevcut prosedürel görsel
+pipeline'ını (`scripts/generate_images.py <slug...>`) kullan ve kararı kullanıcıya açıkça bildir.
+
+---
+
+## TAMAMLANDI — Aşama 18 (gerçek "25 Yüksek Aroma" DIY Kit fotoğrafları, 2026-09-05)
+
+Kullanıcı proje köküne `gorseller/` klasörü içinde **30 gerçek Nefis Aroma marka görseli**
+bıraktı (kare 1254×1254 jpg, her biri gerçek logo/etiket/İçerik metniyle basılı — prosedürel
+üretim değil, gerçek pazarlama görseli) ve bunları ana sayfa + ürünler sayfasına şık biçimde
+yerleştirmesini istedi. Dosya adlarındaki bazı ek kelimeler (`-santa-`, `-suicide-bunny`,
+`-the-milkman`, `-one-hit-wonder`, `-black-note`) görsellerin kendisinde **hiç görünmüyor** —
+görseldeki tek gerçek başlık örn. "FIZZY", "MADRINA" — bu bir subagent ile 30 görselin tamamı
+tek tek açılarak doğrulandı, üçüncü taraf marka adı hiçbir görselde bulunmadı.
+
+**30 yeni ürün eklendi** (`src/data/products.ts`, toplam **70 → 100 ürün**), hepsi
+`category: 'diy-kitler'`, `series: '25 Yüksek Aroma'`, `subcategory: '25 Yüksek Aroma Kit'`
+(bu subcategory `src/data/categories.ts`'e eklendi). İsimler ve içerik notları görsellerdeki
+gerçek metinden alındı (ör. Fizzy = karışık ekşi orman meyveleri + gazoz, Subzero = mentol+buz+nane,
+Macchiato = kavrulmuş kahve+süt). 2 görselde İçerik metni tasarımda kesik/eksikti (Virginia,
+MB-Ash) — bu ikisi için uydurma detay eklenmeden sade tütün profili yazıldı.
+
+**Şema değişikliği:** `Seed`/`Product` tipine opsiyonel `heroImage?: string` eklendi
+(`src/data/products.ts`). Verilirse `buildProduct`/`buildVariants` prosedürel 4'lü
+`slug-1..4.webp` seti yerine tek gerçek fotoğrafı hem galeri hem tüm varyant görseli olarak
+kullanır — çünkü bu 30 üründe gerçek foto zaten 30/60/100 ml'nin üçünü birden gösteriyor
+(diy-kit formunun 3 hacim varyantıyla birebir örtüşüyor). Diğer 70 üründe `heroImage` yok,
+davranışları değişmedi.
+
+**Görseller:** `scripts/convert_diy25_images.py` (tek seferlik, `generate_images.py`'den
+bağımsız) — `gorseller/*.jpg`'yi 1000×1000 webp'e çevirip `public/images/products/diy25-<slug>.webp`
+olarak kaydeder.
+
+**Yeni ana sayfa bölümü:** `src/components/home/Diy25Section.tsx` — `ProductRail` ile
+`series === '25 Yüksek Aroma'` olan 30 ürünü gösterir, `BestSellersSection`'dan hemen sonra
+(`src/app/page.tsx`). "Tümünü gör" → `/kategori/diy-kitler` (artık 32 ürün, mevcut
+`ProductBrowser` filtre sistemi otomatik çalışıyor, kod değişikliği gerekmedi). `/urunler`
+sayfası da otomatik 100 ürünü gösteriyor (statik değişiklik gerekmedi).
+
+Doğrulama: `typecheck`/`lint`/`build` temiz (**134 route, 100 ürün**, tamamı statik).
+Headless Chrome ile ana sayfa/`/urunler`/`/urun/fizzy`/`/kategori/diy-kitler` görsel olarak
+kontrol edildi — gerçek fotoğraflar kart gridine/PDP galerisine sorunsuz oturuyor (kare format
+zaten `aspect-square object-cover` ile birebir uyumlu).
+
+**Önemli not:** Ana sayfada `AromaFinderSection`'dan sonra `LabProcess`/`CampaignBanner`/
+`GuideTeaser`/`Testimonials`/`InstagramFeed`/`NewsletterSection` bölümleri headless Chrome
+full-page screenshot'ta (otomatik scroll sonrası) boş/beyaz görünüyor — bu **bu oturumdan önce
+de var olan**, muhtemelen Reveal/IntersectionObserver + Puppeteer scroll zamanlamasıyla ilgili
+bir ekran görüntüsü artefaktı (önceki QA turlarında `qa-responsive.mjs`/`qa-console.mjs` ile
+0 hata rapor edilmişti). Bu oturumda kapsam dışı bırakıldı; kullanıcı fark ederse veya
+"devam et" derse önce gerçek tarayıcıda (screenshot değil) doğrulanmalı.
+
+---
+
+## KONVANSİYONLAR
+- Sunucu bileşeni varsayılan; `'use client'` sadece etkileşim/hook gerekince.
+- Mock data `src/data/`, iş mantığı `src/lib/`, global state `src/store/`.
+- Görseller `next/image` ile; hero `priority`, altları `loading="lazy"` + `sizes`.
+- Tüm butonlar çalışır durumda olacak; `href="#"` YASAK; "lorem ipsum" YASAK; emoji YASAK.
+- Sahte sertifika/rakam/müşteri logosu YOK; sağlık iddiası YOK. Doğrulanmamış bilgiler `site.ts` içinde placeholder.
+- Dil: Türkçe, profesyonel, klişesiz.
