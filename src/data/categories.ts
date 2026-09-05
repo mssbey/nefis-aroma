@@ -7,7 +7,7 @@ export const categories: Category[] = [
     tagline: 'Bahçeden alınan ilk ısırık',
     description:
       'Olgun çekirdekli meyveler, tropikal notalar ve kırmızı orman meyveleri. Doğal tatlılığı öne çıkaran, dengeli meyve profilleri.',
-    cover: '/images/categories/meyveli.webp',
+    cover: '/images/nefisaroma/categories/meyveli.webp',
     icon: '/images/icons/meyveli.svg',
     subcategories: ['Çekirdekli Meyve', 'Kırmızı Orman Meyvesi', 'Tropikal', 'Turunçgil', 'Karpuz & Kavun'],
     accent: 'gold',
@@ -18,7 +18,7 @@ export const categories: Category[] = [
     tagline: 'Serinliğin kontrollü hâli',
     description:
       'Buz, mentol ve soğuk meyve dokunuşları. Yaz gününde derin bir nefes hissi veren, keskin olmayan ferahlık.',
-    cover: '/images/categories/ferah.webp',
+    cover: '/images/nefisaroma/categories/ferah.webp',
     icon: '/images/icons/ferah.svg',
     subcategories: ['Buzlu Meyve', 'Mentol', 'Nane', 'Kutup Serisi'],
     accent: 'fresh',
@@ -29,7 +29,7 @@ export const categories: Category[] = [
     tagline: 'Fırından yeni çıkmış gibi',
     description:
       'Vanilya, karamel, custard ve süt tatlısı katmanları. Ağızda yumuşak kapanan, ağır olmayan tatlı profiller.',
-    cover: '/images/categories/tatli-kremsi.webp',
+    cover: '/images/nefisaroma/categories/tatli-kremsi.webp',
     icon: '/images/icons/tatli.svg',
     subcategories: ['Custard & Krema', 'Karamel', 'Bisküvi & Kek', 'Sütlü Tatlı'],
     accent: 'gold',
@@ -40,7 +40,7 @@ export const categories: Category[] = [
     tagline: 'Bardaktaki tarifin kopyası',
     description:
       'Soğuk kahve, limonata, kola ve enerji içeceği yorumları. Gün içinde tanıdık gelen içecek notaları.',
-    cover: '/images/categories/icecek.webp',
+    cover: '/images/nefisaroma/categories/icecek.webp',
     icon: '/images/icons/icecek.svg',
     subcategories: ['Kahve', 'Limonata & Soda', 'Kola', 'Enerji İçeceği', 'Çay'],
     accent: 'dark',
@@ -51,7 +51,7 @@ export const categories: Category[] = [
     tagline: 'Sofistike ve dingin',
     description:
       'Kuru yaprak, hafif tatlı ve fırınlanmış notalar. Klasik tütün karakterini modern bir dengeyle sunan koyu profiller.',
-    cover: '/images/categories/tutun.webp',
+    cover: '/images/nefisaroma/categories/tutun.webp',
     icon: '/images/icons/tutun.svg',
     subcategories: ['Klasik Tütün', 'Tatlı Tütün', 'Kuru Meyveli Tütün', 'Karışım Tütün'],
     accent: 'dark',
@@ -62,7 +62,7 @@ export const categories: Category[] = [
     tagline: 'Katmanlı, kurgulanmış tarifler',
     description:
       'Birden fazla profilin dengelenmesiyle hazırlanan hazır karışımlar. Tek şişede tamamlanmış bir tat kompozisyonu.',
-    cover: '/images/categories/mix.webp',
+    cover: '/images/nefisaroma/categories/mix.webp',
     icon: '/images/icons/mix.svg',
     subcategories: ['Meyve Karışımı', 'Tatlı Karışım', 'Ferah Karışım', 'İmza Karışım'],
     accent: 'purple',
@@ -73,7 +73,7 @@ export const categories: Category[] = [
     tagline: 'Kendi tarifini kur',
     description:
       'Aroma, baz ve ölçüm ekipmanını bir arada sunan başlangıç ve ileri seviye setleri. Adım adım hazırlanmış tarif kartlarıyla.',
-    cover: '/images/categories/diy-kitler.webp',
+    cover: '/images/nefisaroma/categories/mix.webp',
     icon: '/images/icons/diy.svg',
     subcategories: ['Başlangıç Seti', 'Karıştırma Seti', 'Ölçüm Ekipmanı', '25 Yüksek Aroma Kit'],
     accent: 'purple',
@@ -84,7 +84,7 @@ export const categories: Category[] = [
     tagline: 'Tarifin sessiz temeli',
     description:
       'Farklı oranlarda hazırlanmış nötr baz sıvıları. Aromanın önüne geçmeyen, temiz ağız hissi veren taşıyıcı.',
-    cover: '/images/categories/nbase.webp',
+    cover: '/images/nefisaroma/story/aroma-atolyesi.webp',
     icon: '/images/icons/nbase.svg',
     subcategories: ['Yüksek VG', 'Dengeli Oran', 'Yüksek PG'],
     accent: 'dark',
@@ -98,7 +98,7 @@ export const collections: Collection[] = [
     subtitle: 'Sıcak, olgun, altın tonlu tatlar',
     description:
       'Karamelize meyve, bal dokunuşu ve fırınlanmış tatlı notalarının bir araya geldiği koleksiyon. Akşam kullanımına yakın, doygun profiller.',
-    cover: '/images/collections/golden-drop.webp',
+    cover: '/images/nefisaroma/collections/aroma-seckisi.webp',
     atmosphere: 'Altın ışık, cam damlalık, kehribar sıvı',
   },
   {
@@ -107,7 +107,7 @@ export const collections: Collection[] = [
     subtitle: 'Koyu meyve ve derin karakter',
     description:
       'Üzüm, böğürtlen, incir ve hafif baharatlı arka planların dengelendiği özel seri. Katmanlı ve iddialı tarifler.',
-    cover: '/images/collections/purple-reserve.webp',
+    cover: '/images/nefisaroma/hero/aroma-dunyasi.webp',
     atmosphere: 'Gece moru yüzey, mürekkep gibi sıvı, tek altın çizgi',
   },
   {
@@ -116,7 +116,7 @@ export const collections: Collection[] = [
     subtitle: 'Ölçülü serinlik, temiz bitiş',
     description:
       'Buzlu meyve ve mentolün kontrollü dozda kullanıldığı ferah koleksiyon. Gün boyu yormayan, net profiller.',
-    cover: '/images/collections/fresh-lab.webp',
+    cover: '/images/nefisaroma/categories/ferah.webp',
     atmosphere: 'Buz zemini, soğuk mavi-mor ışık, su damlaları',
   },
 ];

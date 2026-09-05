@@ -17,7 +17,7 @@ import { toast } from '@/store/toast';
 import { currency } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
-export function QuickView({ product, onClose }: { product: Product | null; onClose: () => void }) {
+function QuickViewContent({ product, onClose }: { product: Product | null; onClose: () => void }) {
   const add = useCart((s) => s.add);
   const openCart = useUI((s) => s.openCart);
   const [qty, setQty] = useState(1);
@@ -142,3 +142,5 @@ export function QuickView({ product, onClose }: { product: Product | null; onClo
     </Modal>
   );
 }
+
+export function QuickView(props: { product: Product | null; onClose: () => void }) { return <QuickViewContent key={props.product?.id ?? "closed"} {...props} />; }

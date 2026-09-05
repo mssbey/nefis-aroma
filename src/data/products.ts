@@ -15,6 +15,9 @@ import type {
 } from '@/types';
 import { slugify, seededRandom } from '@/lib/utils';
 
+// Existing catalog is a demo. Images describe the category, never actual packaging.
+const conceptImage = (seed: Seed) => '/images/nefisaroma/' + (seed.category === 'nbase' ? 'story/aroma-atolyesi' : 'categories/' + (seed.category === 'diy-kitler' ? (seed.profiles.includes('tutun') ? 'tutun' : seed.profiles.includes('ferah') ? 'ferah' : seed.profiles.includes('kremsi') ? 'tatli-kremsi' : 'mix') : seed.category)) + '.webp';
+
 interface Seed {
   name: string;
   series: string;
@@ -104,7 +107,7 @@ function buildVariants(seed: Seed, rnd: () => number): ProductVariant[] {
         oldPrice,
         stock,
         stockCount,
-        image: seed.heroImage ?? `/images/products/${slug}-${(vi % 4) + 1}.webp`,
+        image: conceptImage(seed),
         onSale,
       });
     });
@@ -2018,15 +2021,14 @@ function buildProduct(seed: Seed): Product {
     : 'out-of-stock';
   const basePrice = variants[0].price;
   const oldPrice = variants[0].oldPrice;
-  const rating = Number((3.9 + rnd() * 1.05).toFixed(1));
-  const reviewCount = 12 + Math.floor(rnd() * 180);
+  const rating = 0;
+  const reviewCount = 0;
 
-  const gallery = seed.heroImage
-    ? [{ src: seed.heroImage, alt: `${seed.name} — Nefis Aroma 25 Yüksek Aroma DIY Kit` }]
-    : [1, 2, 3, 4].map((i) => ({
-        src: `/images/products/${slug}-${i}.webp`,
-        alt: `${seed.name} — Nefis Aroma ${seed.category} aroması, görsel ${i}`,
-      }));
+  const gallery = [
+    { src: conceptImage(seed), alt: seed.name + " için kategori odaklı temsili aroma görseli; gerçek ambalaj değildir" },
+    { src: "/images/nefisaroma/guide/tat-notalari.webp", alt: "Tat notalarını anlatan temsili aroma kompozisyonu" },
+    { src: "/images/nefisaroma/story/aroma-atolyesi.webp", alt: "Temsili aroma hazırlama kompozisyonu" },
+  ];
 
   return {
     id: slug,
@@ -2043,7 +2045,7 @@ function buildProduct(seed: Seed): Product {
     badges: seed.badges,
     images: gallery.slice(0, 2),
     gallery,
-    videoPlaceholder: seed.heroImage ?? `/images/products/${slug}-1.webp`,
+    videoPlaceholder: undefined,
     basePrice,
     oldPrice,
     rating,
@@ -2051,13 +2053,13 @@ function buildProduct(seed: Seed): Product {
     stockStatus,
     ingredientsNote:
       'İçerik bilgisi ürün etiketinde yer alır. Aroma bazı ve taşıyıcı oranları parti bazında değişebilir; kesin bilgi için ambalajı esas alın.',
-    usageRate: seed.usageRate,
-    steepTime: seed.steepTime,
+    usageRate: 'Doğrulanmış kullanım oranı henüz eklenmedi; ürünün resmi belgesini esas alın.',
+    steepTime: 'ürüne ait doğrulanmış süre bilgisi bekleniyor.',
     origin: seed.origin,
     storage:
-      'Ağzı kapalı, serin (15–22°C), ışık almayan bir yerde saklayın. Çocukların ve evcil hayvanların erişemeyeceği yerde tutun.',
+      'Saklama koşulları için ürün etiketi ve resmi teknik belge esas alınmalıdır.',
     warnings:
-      'Gıda takviyesi veya ilaç değildir. Sağlıkla ilgili bir iddia taşımaz. Hamilelik ve emzirme döneminde kullanmadan önce uzmana danışın. Nikotin içermez.',
+      'Bu vitrin kullanım uygunluğu, içerik, alerjen veya doz doğrulaması sağlamaz. Kullanımdan önce ürünün resmi bilgilerini kontrol edin.',
     taste: seed.taste,
     form: seed.form,
     featured: !!seed.featured,
@@ -2065,7 +2067,7 @@ function buildProduct(seed: Seed): Product {
     newArrival: !!seed.newArrival,
     variants,
     relatedProductIds: [],
-    faq: buildFaq(seed),
+    faq: buildFaq(seed).map((item) => ({ ...item, answer: "Bu ürün için doğrulanmış teknik bilgi henüz eklenmedi. ürün etiketi ve resmi teknik belge esas alınmalıdır." })),
   };
 }
 

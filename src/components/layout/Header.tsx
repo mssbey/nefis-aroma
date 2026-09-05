@@ -38,7 +38,7 @@ export function Header() {
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('scroll', onScroll); };
   }, []);
 
   useEffect(() => {
@@ -81,6 +81,8 @@ export function Header() {
           scrolled ? 'shadow-soft' : '',
         )}
         onMouseLeave={closeMega}
+        onKeyDown={(e) => { if (e.key === 'Escape') setMegaOpen(false); }}
+        onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setMegaOpen(false); }}
       >
         <div className={cn('overflow-hidden transition-all duration-300', scrolled ? 'max-h-0 opacity-0' : 'max-h-10 opacity-100')}>
           <AnnouncementBar />
@@ -88,7 +90,7 @@ export function Header() {
 
         <div className="border-b border-purple-100 bg-cream/90 backdrop-blur-lg">
           <div className="container-page">
-            <div className={cn('flex items-center gap-3 transition-all duration-300', scrolled ? 'h-16' : 'h-[72px]')}>
+            <div className={cn('flex items-center gap-1 sm:gap-3 lg:gap-10 transition-all duration-300', scrolled ? 'h-16' : 'h-[88px]')}>
               <button
                 type="button"
                 onClick={() => setMobileOpen(true)}
@@ -100,7 +102,7 @@ export function Header() {
 
               <Logo priority className={cn('transition-all', scrolled && 'lg:scale-95')} />
 
-              <form onSubmit={submitSearch} className="mx-auto hidden w-full max-w-xl lg:block" role="search">
+              <form onSubmit={submitSearch} className="mx-auto hidden w-full max-w-lg lg:block" role="search">
                 <div className="flex items-center gap-2 rounded-full border border-purple-200 bg-white px-4 py-2.5 transition-colors focus-within:border-purple-400">
                   <Search size={17} className="shrink-0 text-purple-400" />
                   <input
@@ -171,6 +173,7 @@ export function Header() {
           )}
         >
           <nav
+            inert={scrolled}
             className="container-page hide-scrollbar mask-fade-x flex flex-nowrap items-center gap-1 overflow-x-auto"
             aria-label="Ana menü"
           >

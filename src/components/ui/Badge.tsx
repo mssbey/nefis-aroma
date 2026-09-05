@@ -3,8 +3,8 @@ import type { BadgeKind } from '@/types';
 
 const config: Record<BadgeKind, { label: string; className: string }> = {
   yeni: { label: 'Yeni', className: 'bg-purple-600 text-cream' },
-  'cok-satan': { label: 'Çok Satan', className: 'bg-gold-400 text-purple-900' },
-  'sinirli-seri': { label: 'Sınırlı Seri', className: 'bg-purple-900 text-cream' },
+  'cok-satan': { label: 'Seçki', className: 'bg-gold-400 text-purple-900' },
+  'sinirli-seri': { label: 'Özel Seri', className: 'bg-purple-900 text-cream' },
   indirim: { label: 'İndirim', className: 'bg-cream text-purple-800 ring-1 ring-gold-300' },
 };
 

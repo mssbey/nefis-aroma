@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer-core';
 
-const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
+import { findChrome } from './chrome-path.mjs';
+const CHROME = findChrome();
 const BASE = 'http://localhost:3111';
 const PAGES = [
   '/', '/urunler', '/kategori/meyveli', '/koleksiyon/purple-reserve',
@@ -19,7 +20,8 @@ for (const path of PAGES) {
   const messages = [];
   const onConsole = (msg) => {
     const type = msg.type();
-    if (type === 'error' || type === 'warning') messages.push(`[${type}] ${msg.text()}`);
+    const expected404 = path === '/does-not-exist' && msg.location().url === BASE + path && msg.text().includes('404 (Not Found)');
+    if (!expected404 && (type === 'error' || type === 'warning')) messages.push(`[${type}] ${msg.text()}`);
   };
   const onPageError = (err) => messages.push(`[pageerror] ${err.message}`);
   page.on('console', onConsole);
@@ -28,6 +30,8 @@ for (const path of PAGES) {
   try {
     const res = await page.goto(BASE + path, { waitUntil: 'networkidle0', timeout: 20000 });
     const status = res ? res.status() : 'no-response';
+    const expected = path === '/does-not-exist' ? 404 : 200;
+    if (status !== expected) messages.push('[http] Expected ' + expected + ', received ' + status);
     await new Promise((r) => setTimeout(r, 300));
     console.log(`\n=== ${path} [HTTP ${status}] ===`);
     if (messages.length === 0) console.log('  (temiz)');

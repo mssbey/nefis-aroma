@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { m } from 'framer-motion';
 import { Check } from 'lucide-react';
 import type { Product } from '@/types';
-import { uniqueOptions, resolveVariant } from '@/lib/commerce';
+import { uniqueOptions, resolveVariant, pickDefaultVariant } from '@/lib/commerce';
 import { currency } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
@@ -16,8 +16,8 @@ export function QuickAddPanel({
   onConfirm: (variantId: string) => void;
 }) {
   const { volumes, intensities } = uniqueOptions(product);
-  const [volume, setVolume] = useState(volumes[0]);
-  const [intensity, setIntensity] = useState(intensities[0]);
+  const [volume, setVolume] = useState(pickDefaultVariant(product).volume);
+  const [intensity, setIntensity] = useState(pickDefaultVariant(product).intensity);
   const variant = resolveVariant(product, { volume, intensity });
 
   return (
@@ -26,7 +26,7 @@ export function QuickAddPanel({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 8 }}
       transition={{ duration: 0.2 }}
-      className="absolute inset-x-2 bottom-2 z-20 rounded-xl border border-purple-100 bg-white p-3 shadow-lift"
+      className="absolute inset-1 z-20 overflow-y-auto rounded-xl border border-purple-100 bg-white p-3 shadow-lift"
       onClick={(e) => e.preventDefault()}
     >
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-ink-soft">Hacim</p>
@@ -35,6 +35,7 @@ export function QuickAddPanel({
           <button
             key={v}
             type="button"
+            aria-pressed={v === volume}
             onClick={() => setVolume(v)}
             className={cn(
               'rounded-lg border px-2.5 py-1 text-xs font-semibold transition-colors',
@@ -53,6 +54,7 @@ export function QuickAddPanel({
               <button
                 key={it}
                 type="button"
+                aria-pressed={it === intensity}
                 onClick={() => setIntensity(it)}
                 className={cn(
                   'rounded-lg border px-2.5 py-1 text-xs font-semibold transition-colors',

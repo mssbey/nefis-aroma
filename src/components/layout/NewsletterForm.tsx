@@ -23,7 +23,7 @@ export function NewsletterForm({ variant = 'dark', className }: { variant?: 'dar
     setError(null);
     setDone(true);
     // Not: gerçek bir sunucuya gönderilmez — yalnızca frontend geri bildirimi.
-    toast.success('Kaydınız alındı', 'Yeni aroma ve kampanya duyurularını e-postayla paylaşacağız.');
+    toast.success('Demo tamamlandı', 'Abonelik oluşturulmadı; e-posta adresiniz sunucuya gönderilmedi.');
     setEmail('');
     setTimeout(() => setDone(false), 3500);
   };
@@ -63,6 +63,7 @@ export function NewsletterForm({ variant = 'dark', className }: { variant?: 'dar
           {done ? <Check size={17} /> : <ArrowRight size={17} />}
         </button>
       </div>
+      <p className={cn("mt-2 text-xs leading-5", dark ? "text-cream/80" : "text-ink-soft")}>Demo form: abonelik oluşturulmaz, e-posta gönderilmez.</p>
       {error && (
         <p className={cn('mt-2 pl-4 text-xs', dark ? 'text-gold-200' : 'text-rose-600')}>{error}</p>
       )}

@@ -82,7 +82,7 @@ export const guideTopics: GuideTopic[] = [
     body: [
       'Tekli aroma, belirli bir meyveyi veya notayı olabildiğince net vermeye odaklanır. Katmanlamaya, kendi tarifinizi kurmaya uygundur.',
       'Karışım aroma, birden fazla notanın belirli bir his için birlikte kurgulandığı tariftir. Hazır ve dengeli bir sonuç sunar.',
-      'Yeni başlıyorsanız bir karışımla başlayıp sonra tekli aromalarla kendi varyasyonlarınızı denemek iyi bir yoldur.',
+      'Ürünleri bu ayrım üzerinden karşılaştırabilirsiniz; kullanım uygunluğunu ürün belgeleriyle doğrulayın.',
     ],
   },
   {
@@ -92,7 +92,7 @@ export const guideTopics: GuideTopic[] = [
     body: [
       'Her ürün sayfasında beş eksenli bir tat profili bulunur: tatlılık, ferahlık, yoğunluk, ekşilik ve kremsilik.',
       'Değerler 0–10 arasında görecelidir ve ürünler arası karşılaştırma için tasarlanmıştır; mutlak bir ölçüm değildir.',
-      'Yüksek yoğunluk, aromanın daha az oranda bile baskın hissedileceği anlamına gelir.',
+      'Bu vitrindeki profil değerleri örnektir; ölçüm veya kullanım dozu önerisi değildir.',
     ],
   },
   {
@@ -101,7 +101,7 @@ export const guideTopics: GuideTopic[] = [
     summary: 'Standart, Yoğun ve Extra Fresh varyantları ne anlama gelir?',
     body: [
       'Standart varyant, profilin dengeli hâlidir ve çoğu kullanıcı için başlangıç noktasıdır.',
-      'Yoğun varyantta ana nota daha öne çıkar; daha düşük oranda kullanılması önerilir.',
+      'Yoğun, katalogda bulunan bir varyasyon adıdır; kullanım oranı hakkında tek başına bilgi vermez.',
       'Extra Fresh varyantı yalnızca ferah profillerde bulunur ve serinlik dozu belirgin biçimde daha yüksektir.',
     ],
   },
@@ -110,7 +110,7 @@ export const guideTopics: GuideTopic[] = [
     title: 'Ürün saklama önerileri',
     summary: 'Işık, ısı ve hava ile temas aromayı nasıl etkiler?',
     body: [
-      'Aromaları ağzı kapalı, serin (yaklaşık 15–22°C) ve doğrudan ışık almayan bir yerde saklayın.',
+      'Ürüne özel saklama sıcaklığı ve koşulları için resmi ürün etiketi esas alınmalıdır.',
       'Uzun süre yüksek sıcaklıkta kalan aromalarda nota kayması olabilir.',
       'Çocukların ve evcil hayvanların erişemeyeceği bir yerde tutun.',
     ],
@@ -122,7 +122,7 @@ export const guideTopics: GuideTopic[] = [
     body: [
       'Aroma baz ile karıştıktan sonra notaların birbirine yerleşmesi zaman alır. Bu süreye bekleme veya demlenme denir.',
       'Meyveli ve ferah profiller genellikle daha kısa; kremsi ve tütün profilleri daha uzun sürede oturur.',
-      'Önerilen süreler her ürün sayfasında belirtilir ve damak tercihine göre uzatılabilir.',
+      'Bu demo katalogda doğrulanmış bekleme süresi bulunmaz; üreticinin ürün talimatlarını esas alın.',
     ],
   },
   {
@@ -220,7 +220,7 @@ export const campaign = {
   code: 'GOLDENDROP',
   codeNote: 'Sepette “GOLDENDROP” kodu ile %15 indirim (örnek kampanya).',
   cta: { label: 'Koleksiyonu İncele', href: '/koleksiyon/purple-reserve' },
-  image: '/images/campaigns/a.webp',
+  image: '/images/nefisaroma/collections/aroma-seckisi.webp',
 };
 
 export interface TimelineItem {

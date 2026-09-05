@@ -15,9 +15,9 @@ export function CampaignBanner() {
             alt=""
             fill
             sizes="(max-width:1360px) 100vw, 1360px"
-            className="object-cover opacity-40"
+            className="object-cover opacity-90"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-900 via-purple-900/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-900/95 via-purple-900/55 to-transparent" />
           <div className="relative grid gap-6 px-6 py-14 sm:px-12 lg:py-20">
             <div className="max-w-lg">
               <span className="inline-flex items-center gap-2 rounded-full border border-gold-200/30 bg-gold-200/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-gold-200">

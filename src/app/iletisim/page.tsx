@@ -22,18 +22,14 @@ export default function ContactPage() {
       <Breadcrumbs items={[{ label: 'İletişim' }]} />
       <h1 className="mt-4 text-display-sm">İletişim</h1>
       <p className="mt-2 max-w-xl text-ink-soft">
-        Aşağıdaki bilgiler örnek/placeholder’dır; gerçek iletişim bilgileri{' '}
-        <code className="rounded bg-purple-50 px-1">src/lib/site.ts</code> dosyasından güncellenebilir.
+        İletişim bilgilerimiz henüz doğrulanmadı. Aşağıdaki form yalnızca demo amaçlıdır; mesaj göndermez.
       </p>
 
       <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.2fr]">
         <div className="space-y-4">
           {cards.map((c) => (
-            <a
+            <div
               key={c.label}
-              href={c.href}
-              target={c.label === 'WhatsApp' ? '_blank' : undefined}
-              rel={c.label === 'WhatsApp' ? 'noopener noreferrer' : undefined}
               className="flex items-center gap-4 rounded-2xl border border-purple-100 bg-white p-5 transition-shadow hover:shadow-lift"
             >
               <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-purple-50 text-purple-600">
@@ -41,9 +37,9 @@ export default function ContactPage() {
               </span>
               <div className="min-w-0">
                 <p className="text-xs font-semibold uppercase tracking-wide text-gold-500">{c.label}</p>
-                <p className="break-words font-medium text-purple-900">{c.value}</p>
+                <p className="break-words font-medium text-purple-900">Bilgi eklenecek</p>
               </div>
-            </a>
+            </div>
           ))}
 
           <div className="flex items-start gap-4 rounded-2xl border border-purple-100 bg-white p-5">
@@ -52,9 +48,7 @@ export default function ContactPage() {
             </span>
             <div className="min-w-0">
               <p className="text-xs font-semibold uppercase tracking-wide text-gold-500">Adres</p>
-              {site.contact.addressLines.map((l) => (
-                <p key={l} className="text-sm text-ink">{l}</p>
-              ))}
+              <p className="text-sm text-ink">Doğrulanmış adres bilgisi eklenecek.</p>
             </div>
           </div>
 
@@ -64,7 +58,7 @@ export default function ContactPage() {
             </span>
             <div className="min-w-0">
               <p className="text-xs font-semibold uppercase tracking-wide text-gold-500">Çalışma Saatleri</p>
-              <p className="text-sm text-ink">{site.contact.workingHours}</p>
+              <p className="text-sm text-ink">Doğrulanmış saat bilgisi eklenecek</p>
             </div>
           </div>
 

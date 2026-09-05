@@ -63,7 +63,7 @@ export function isOptionAvailable(
 }
 
 export const stockLabel: Record<Product['stockStatus'], { text: string; className: string }> = {
-  'in-stock': { text: 'Stokta', className: 'text-emerald-600' },
-  'low-stock': { text: 'Son birkaç adet', className: 'text-gold-600' },
-  'out-of-stock': { text: 'Tükendi', className: 'text-rose-500' },
+  'in-stock': { text: 'Demo: seçilebilir', className: 'text-emerald-700' },
+  'low-stock': { text: 'Demo: sınırlı seçenek', className: 'text-gold-600' },
+  'out-of-stock': { text: 'Demo: stokta yok', className: 'text-rose-700' },
 };

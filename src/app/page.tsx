@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+import { TrustStrip } from '@/components/home/TrustStrip';
 import { Hero } from '@/components/home/Hero';
 import { CategoryShowcase } from '@/components/home/CategoryShowcase';
 import { Diy25Section } from '@/components/home/Diy25Section';
@@ -8,25 +10,28 @@ import { LabProcess } from '@/components/home/LabProcess';
 import { NewArrivalsSection } from '@/components/home/NewArrivalsSection';
 import { CampaignBanner } from '@/components/home/CampaignBanner';
 import { GuideTeaser } from '@/components/home/GuideTeaser';
-import { Testimonials } from '@/components/home/Testimonials';
-import { InstagramFeed } from '@/components/home/InstagramFeed';
 import { NewsletterSection } from '@/components/home/NewsletterSection';
+import { ProductFormats } from '@/components/home/ProductFormats';
+
+export const metadata: Metadata = { alternates: { canonical: '/' } };
 
 export default function HomePage() {
   return (
     <>
       <Hero />
+      <TrustStrip />
       <CategoryShowcase />
-      <Diy25Section />
+
       <FlavorExplorer />
+      <LabProcess />
+      <ProductFormats />
+      <Diy25Section />
       <SignatureCollections />
       <AromaFinderSection />
-      <LabProcess />
+
       <NewArrivalsSection />
       <CampaignBanner />
       <GuideTeaser />
-      <Testimonials />
-      <InstagramFeed />
       <NewsletterSection />
     </>
   );

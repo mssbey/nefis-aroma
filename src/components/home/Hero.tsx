@@ -1,127 +1,28 @@
-'use client';
-
-import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { m, useReducedMotion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
-import { heroContent } from '@/data/content';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
 export function Hero() {
-  const reduce = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const yBg = useTransform(scrollYProgress, [0, 1], ['0%', '16%']);
-  const yFront = useTransform(scrollYProgress, [0, 1], ['0%', '-6%']);
-
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const rx = useSpring(useTransform(my, [-0.5, 0.5], [6, -6]), { stiffness: 120, damping: 18 });
-  const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 120, damping: 18 });
-
-  const onMove = (e: React.MouseEvent) => {
-    if (reduce) return;
-    const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    mx.set((e.clientX - r.left) / r.width - 0.5);
-    my.set((e.clientY - r.top) / r.height - 0.5);
-  };
-
   return (
-    <section
-      ref={ref}
-      onMouseMove={onMove}
-      onMouseLeave={() => {
-        mx.set(0);
-        my.set(0);
-      }}
-      className="surface-dark relative overflow-hidden"
-    >
-      <div className="grain absolute inset-0" aria-hidden />
-      <m.div style={{ y: reduce ? 0 : yBg }} className="absolute inset-0" aria-hidden>
-        <Image
-          src="/images/hero/hero.webp"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[72%_center]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-900 via-purple-900/90 to-purple-900/55" />
-        <div className="absolute inset-0 bg-gradient-to-t from-purple-900 via-purple-900/20 to-purple-900/55" />
-      </m.div>
-
-      <div className="container-page relative grid min-h-[560px] items-center py-16 sm:py-20 lg:min-h-[640px] lg:py-24">
-        <m.div style={{ y: reduce ? 0 : yFront }} className="max-w-xl">
-
-          <m.span
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 rounded-full border border-gold-200/30 bg-gold-200/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-gold-200"
-          >
-            <Sparkles size={13} /> {heroContent.eyebrow}
-          </m.span>
-
-          <m.h1
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.08 }}
-            className="mt-5 max-w-lg font-display text-[clamp(2.4rem,5vw,3.9rem)] font-semibold leading-[1.05] tracking-tight text-cream"
-          >
-            {heroContent.title}
-          </m.h1>
-
-          <m.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.16 }}
-            className="mt-5 max-w-md text-pretty text-base text-cream/75 sm:text-lg"
-          >
-            {heroContent.subtitle}
-          </m.p>
-
-          <m.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.24 }}
-            className="mt-8 flex flex-wrap gap-3"
-          >
-            <Link href={heroContent.primaryCta.href} className="btn-gold">
-              {heroContent.primaryCta.label} <ArrowRight size={16} />
-            </Link>
-            <Link
-              href={heroContent.secondaryCta.href}
-              className="btn border border-cream/25 text-cream hover:bg-cream/10"
-            >
-              {heroContent.secondaryCta.label}
-            </Link>
-          </m.div>
-
-          <m.dl
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-12 flex gap-8 border-t border-cream/10 pt-6"
-          >
-            {heroContent.stats.map((s) => (
-              <div key={s.label}>
-                <dt className="font-display text-2xl font-semibold text-gold-200">{s.value}</dt>
-                <dd className="text-xs text-cream/60">{s.label}</dd>
-              </div>
-            ))}
-          </m.dl>
-        </m.div>
-
-        <m.div
-          style={{ rotateX: reduce ? 0 : rx, rotateY: reduce ? 0 : ry }}
-          className="pointer-events-none absolute right-[-6%] top-1/2 hidden h-[70%] w-[42%] -translate-y-1/2 lg:block"
-          aria-hidden
-        >
-          <div className="absolute inset-0 rounded-full bg-gold-400/20 blur-3xl" />
-        </m.div>
+    <section className="hero-editorial">
+      <div className="container-page grid items-center lg:grid-cols-[0.92fr_1.08fr]">
+        <div className="hero-copy relative z-10 py-9 sm:py-14 lg:py-16">
+          <span className="eyebrow"><span className="h-px w-8 bg-current" /> Nefis Aroma dünyası</span>
+          <h1 className="mt-6 max-w-xl text-[clamp(2.65rem,4.8vw,4.4rem)] leading-[1.06]">
+            Küçük bir damla.<br /><em className="font-normal text-purple-600">Bambaşka</em><br />bir dünya.
+          </h1>
+          <p className="mt-6 max-w-[390px] text-base leading-7 text-ink-soft">Meyvenin canlılığından vanilyanın yumuşaklığına. Kendi tat dünyanı kurmak için aroma koleksiyonumuzu keşfet.</p>
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            <Link href="/urunler" className="btn-primary !px-4 sm:!px-6">Ürünleri Keşfet <ArrowRight size={17} /></Link>
+            <Link href="/aroma-rehberi" className="btn-ghost !px-4 sm:!px-6">Aroma Rehberi <ArrowUpRight size={17} /></Link>
+          </div>
+          <p className="mt-8 text-xs tracking-wide text-ink-soft">Özenle seç · Profilini keşfet · Favorilerini biriktir</p>
+        </div>
+        <figure className="hero-photo relative -mx-4 sm:-mx-6 lg:mx-0">
+          <Image src="/images/nefisaroma/hero/aroma-dunyasi.webp" alt="Krem taş üzerinde cam şişe, incir, böğürtlen ve turunçgil ile temsili aroma kompozisyonu" fill preload sizes="(max-width:1023px) 100vw, (max-width:1440px) 55vw, 740px" quality={75} className="object-cover object-[65%_center]" />
+          <figcaption className="absolute bottom-5 left-5 rounded-full border border-white/60 bg-cream/90 px-4 py-2 text-[11px] tracking-wide text-purple-800 backdrop-blur-sm">Aroma dünyasından ilham · Temsili görsel</figcaption>
+        </figure>
       </div>
-
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cream to-transparent" />
     </section>
   );
 }

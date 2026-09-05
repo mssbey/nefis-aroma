@@ -56,11 +56,14 @@ export function ProductBrowser({
       const next = { ...filters, ...patch };
       setFilters(next);
       setVisible(PAGE_SIZE);
-      const qs = filtersToParams(next, priceMin, priceMax);
+      const params = new URLSearchParams(filtersToParams(next, priceMin, priceMax));
+      const query = searchParams.get("q");
+      if (query) params.set("q", query);
+      const qs = params.size ? "?" + params.toString() : "";
       router.replace(`${pathname}${qs}`, { scroll: false });
       window.setTimeout(() => setLoading(false), 260);
     },
-    [filters, pathname, priceMin, priceMax, router],
+    [filters, pathname, priceMin, priceMax, router, searchParams],
   );
 
   const clear = () => set(defaultFilters(priceMin, priceMax));
@@ -77,7 +80,7 @@ export function ProductBrowser({
   const activeCount = countActive(filters, priceMin, priceMax);
 
   return (
-    <div className="grid grid-cols-1 gap-8 lg:grid-cols-[260px_1fr]">
+    <div className="grid grid-cols-1 gap-8 lg:grid-cols-[240px_1fr]">
       <aside className="hidden lg:block">
         <div className="sticky top-[calc(var(--header-h)+16px)] max-h-[calc(100vh-var(--header-h)-32px)] overflow-y-auto rounded-2xl border border-purple-100 bg-white p-5">
           <FilterPanel
@@ -95,7 +98,7 @@ export function ProductBrowser({
 
       <div className="min-w-0">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-purple-100 pb-4">
-          <p className="text-sm text-ink-soft">
+          <p aria-live="polite" className="text-sm text-ink-soft">
             <strong className="text-purple-900">{filtered.length}</strong> ürün bulundu
           </p>
           <div className="flex items-center gap-2">
@@ -174,7 +177,7 @@ export function ProductBrowser({
           ) : (
             <div className="space-y-4">
               {shown.map((p) => (
-                <div key={p.id} className="sm:max-w-sm">
+                <div key={p.id} className="product-list-item">
                   <ProductCard product={p} onQuickView={setQuick} />
                 </div>
               ))}

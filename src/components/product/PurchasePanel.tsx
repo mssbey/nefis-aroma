@@ -48,11 +48,11 @@ export function PurchasePanel({ product, variant, volume, intensity, qty, onVolu
   };
 
   return (
-    <div>
+    <div className="rounded-3xl border border-purple-100 bg-white p-5 sm:p-8">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold-500">
         {catName} · {product.series}
       </p>
-      <h1 className="mt-1.5 font-display text-2xl font-semibold text-purple-900 sm:text-3xl">{product.name}</h1>
+      <h1 className="mt-1.5 font-display text-2xl font-semibold text-purple-900 sm:text-4xl">{product.name}</h1>
       <p className="mt-2 text-sm text-ink-soft">{product.shortDescription}</p>
 
       <div className="mt-3 flex items-center gap-3">
@@ -65,7 +65,7 @@ export function PurchasePanel({ product, variant, volume, intensity, qty, onVolu
       <div className="mt-5 flex flex-wrap items-end justify-between gap-3 rounded-2xl bg-purple-50/60 p-4">
         <Price price={variant.price} oldPrice={variant.oldPrice} size="lg" />
         <p className="max-w-[11rem] text-right text-[11px] leading-snug text-ink-soft">
-          Taksit bilgisi <span className="font-semibold text-purple-700">ödeme sayfası hazır olduğunda</span> gösterilecektir.
+          Demo fiyat ve varyasyonlar. Gerçek ödeme alınmaz.
         </p>
       </div>
 
@@ -79,6 +79,7 @@ export function PurchasePanel({ product, variant, volume, intensity, qty, onVolu
                 <button
                   key={v}
                   type="button"
+                  aria-pressed={v === volume}
                   disabled={!available}
                   onClick={() => onVolume(v as VariantVolume)}
                   className={cn(
@@ -109,6 +110,7 @@ export function PurchasePanel({ product, variant, volume, intensity, qty, onVolu
                   <button
                     key={it}
                     type="button"
+                    aria-pressed={it === intensity}
                     disabled={!available}
                     onClick={() => onIntensity(it as VariantIntensity)}
                     className={cn(
@@ -137,9 +139,7 @@ export function PurchasePanel({ product, variant, volume, intensity, qty, onVolu
 
         <p className="text-xs text-ink-soft">
           SKU: <span className="font-mono">{variant.sku}</span>
-          {variant.stock === 'low-stock' && (
-            <span className="ml-2 font-semibold text-gold-600">Son {variant.stockCount} adet</span>
-          )}
+
         </p>
       </div>
 
@@ -161,26 +161,19 @@ export function PurchasePanel({ product, variant, volume, intensity, qty, onVolu
         disabled={soldOut}
         className="btn-gold mt-3 w-full disabled:opacity-40"
       >
-        Hemen Al
+        Sepette İncele
       </button>
 
-      <a
-        href={`${site.contact.whatsappUrl}?text=${encodeURIComponent(`Merhaba, ${product.name} (${variant.volume}, ${variant.intensity}) hakkında bilgi almak istiyorum.`)}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-3 flex items-center justify-center gap-2 text-sm font-semibold text-emerald-600 hover:text-emerald-700"
-      >
-        <MessageCircle size={16} /> WhatsApp’tan ürünü sor
-      </a>
+      <Link href="/iletisim" className="mt-4 flex items-center justify-center gap-2 text-sm font-semibold text-purple-700"><MessageCircle size={16} /> ürün hakkında bilgi</Link>
 
       <div className="mt-6 grid gap-3 border-t border-purple-100 pt-5 text-sm text-ink-soft sm:grid-cols-2">
         <div className="flex items-start gap-2.5">
           <Truck size={17} className="mt-0.5 shrink-0 text-purple-500" />
-          <span>{site.commerce.estimatedDelivery} (tahmini)</span>
+          <span>{site.commerce.estimatedDelivery} (örnek koşul)</span>
         </div>
         <div className="flex items-start gap-2.5">
           <ShieldCheck size={17} className="mt-0.5 shrink-0 text-purple-500" />
-          <span>{site.commerce.securePackaging}</span>
+          <span>{site.commerce.securePackaging} (örnek)</span>
         </div>
         <div className="flex items-start gap-2.5">
           <RotateCcw size={17} className="mt-0.5 shrink-0 text-purple-500" />

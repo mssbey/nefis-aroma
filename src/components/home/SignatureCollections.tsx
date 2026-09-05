@@ -9,30 +9,30 @@ export function SignatureCollections() {
   return (
     <section className="section container-page">
       <SectionHeading
-        eyebrow="Signature Collections"
+        eyebrow="Koleksiyonlar"
         title="Nefis Aroma’ya özel üç seçki"
         description="Her koleksiyonun kendi atmosferi, hikâyesi ve seçilmiş ürünleri var."
       />
 
-      <div className="mt-10 space-y-5">
+      <div className="mt-10 grid gap-5 lg:grid-cols-3">
         {collections.map((c, i) => {
           const count = productsByCollection(c.slug).length;
           return (
             <Reveal key={c.slug} delay={i * 0.06}>
               <Link
                 href={`/koleksiyon/${c.slug}`}
-                className="group grid overflow-hidden rounded-[var(--radius-card)] border border-purple-100 bg-white shadow-soft transition-shadow hover:shadow-lift md:grid-cols-[1.1fr_1fr]"
+                className="group grid overflow-hidden rounded-[var(--radius-card)] border border-purple-100 bg-white shadow-soft transition-shadow hover:shadow-lift "
               >
-                <div className="relative aspect-[16/10] md:aspect-auto">
+                <div className="relative aspect-[4/3]">
                   <Image
                     src={c.cover}
                     alt={c.name}
                     fill
-                    sizes="(max-width:768px) 100vw, 45vw"
+                    sizes="(max-width:1024px) 100vw, 420px"
                     className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                   />
                 </div>
-                <div className="flex flex-col justify-center gap-3 p-6 sm:p-9">
+                <div className="flex flex-col justify-center gap-3 p-6 sm:p-7">
                   <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500">
                     {String(i + 1).padStart(2, '0')} · {count} ürün
                   </span>

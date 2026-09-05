@@ -19,8 +19,8 @@ export function Reveal({ children, className, delay = 0, y = 16, as = 'div', onc
   return (
     <Comp
       className={className}
-      initial={reduce ? { opacity: 0 } : { opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={false}
+      whileInView={reduce ? undefined : { opacity: 1, y: [y / 2, 0] }}
       viewport={{ once, margin: '-60px' }}
       transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay }}
     >

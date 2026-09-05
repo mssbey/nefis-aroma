@@ -9,7 +9,7 @@ import { formatDateTR } from '@/lib/utils';
 import { toast } from '@/store/toast';
 
 export function ReviewsSection({ productId, initial }: { productId: string; initial: Review[] }) {
-  const [reviews, setReviews] = useState(initial);
+  const [reviews, setReviews] = useState(initial.filter((review) => !review.demo));
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(5);
   const [name, setName] = useState('');
@@ -103,7 +103,7 @@ export function ReviewsSection({ productId, initial }: { productId: string; init
               <div>
                 <p className="flex items-center gap-1.5 text-sm font-semibold text-purple-900">
                   {r.author}
-                  {r.verified && (
+                  {r.verified && !r.demo && (
                     <span className="inline-flex items-center gap-0.5 text-[11px] font-medium text-emerald-600">
                       <ShieldCheck size={12} /> Doğrulanmış
                     </span>

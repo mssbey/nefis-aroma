@@ -13,8 +13,8 @@ export function Diy25Section() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <SectionHeading
           eyebrow="25 Yüksek Aroma"
-          title="DIY Kit serisi: 30/60/100 ml, tek etiket, net tarif"
-          description="Her şişe gerçek ürün fotoğrafıyla — yüksek oranlı konsantre, üç hacim seçeneğiyle."
+          title="Kendi seçkine yer aç."
+          description="25 Yüksek Aroma serisini incele; tat notalarını ve demo hacim seçeneklerini karşılaştır. Görseller temsilidir."
         />
         <Reveal>
           <Link href="/kategori/diy-kitler" className="btn-ghost">

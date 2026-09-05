@@ -18,8 +18,8 @@ export function Logo({
       ? '/brand/logo-mark-light.svg'
       : '/brand/logo-mark.svg'
     : variant === 'light'
-      ? '/brand/logo-light.svg'
-      : '/brand/logo-full.svg';
+      ? '/brand/logo-light-trimmed.svg'
+      : '/brand/logo-full-trimmed.svg';
 
   return (
     <Link
@@ -32,8 +32,8 @@ export function Logo({
         alt="Nefis Aroma"
         width={mark ? 52 : 200}
         height={mark ? 52 : 72}
-        priority={priority}
-        className={cn(mark ? 'h-12 w-12' : 'h-11 w-auto sm:h-14', 'object-contain')}
+        preload={priority}
+        className={cn(mark ? 'h-12 w-12' : 'h-auto w-[112px] sm:w-[156px]', 'object-contain')}
       />
     </Link>
   );

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import useEmblaCarousel from 'embla-carousel-react';
-import { Expand, ChevronLeft, ChevronRight, X, PlayCircle } from 'lucide-react';
+import { Expand, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, m } from 'framer-motion';
 import type { ProductImage } from '@/types';
@@ -70,7 +70,7 @@ export function Gallery({
               alt={images[active].alt || productName}
               fill
               sizes="(max-width:1024px) 100vw, 50vw"
-              priority
+              loading="eager"
               className="object-cover transition-transform duration-200"
               style={
                 zoom.on
@@ -83,7 +83,7 @@ export function Gallery({
             type="button"
             onClick={() => setFullscreen(true)}
             aria-label="Tam ekran galeri"
-            className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full bg-white/90 text-purple-700 opacity-0 shadow-soft transition-opacity group-hover:opacity-100"
+            className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full bg-white/90 text-purple-700 opacity-100 shadow-soft transition-opacity group-hover:opacity-100"
           >
             <Expand size={17} />
           </button>
@@ -94,16 +94,16 @@ export function Gallery({
       <div className="sm:hidden">
         <div className="overflow-hidden rounded-2xl border border-purple-100" ref={emblaRef}>
           <div className="flex">
-            {images.map((img) => (
+            {images.map((img, i) => (
               <div key={img.src} className="relative aspect-square min-w-0 shrink-0 grow-0 basis-full bg-purple-50">
-                <Image src={img.src} alt={img.alt || productName} fill sizes="100vw" className="object-cover" />
+                <Image src={img.src} alt={img.alt || productName} fill loading={i === 0 ? "eager" : "lazy"} sizes="100vw" className="object-cover" />
               </div>
             ))}
           </div>
         </div>
         <div className="mt-3 flex justify-center gap-1.5">
           {images.map((_, i) => (
-            <span key={i} className={cn('h-1.5 rounded-full transition-all', active === i ? 'w-5 bg-purple-600' : 'w-1.5 bg-purple-200')} />
+            <button type="button" onClick={() => setActive(i)} aria-label={"Görsel " + (i + 1)} aria-current={active === i} key={i} className={cn('h-3 rounded-full transition-all', active === i ? 'w-5 bg-purple-600' : 'w-1.5 bg-purple-200')} />
           ))}
         </div>
       </div>
@@ -115,9 +115,7 @@ export function Gallery({
       >
         <Expand size={13} /> Tam ekran görüntüle
       </button>
-      <p className="mt-2 hidden items-center gap-1.5 text-xs text-ink-soft/70 sm:flex">
-        <PlayCircle size={13} /> Ürün videosu için örnek alan — video eklenince bu alanda oynatılacaktır.
-      </p>
+      <p className="mt-3 text-xs leading-5 text-ink-soft">Görseller aroma dünyasını anlatan temsili kompozisyonlardır; gerçek ürün ambalajını veya içeriğini göstermez.</p>
 
       <FullscreenGallery
         open={fullscreen}

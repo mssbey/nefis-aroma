@@ -4,16 +4,16 @@ import { useMemo, useState } from 'react';
 import type { Product, VariantIntensity, VariantVolume } from '@/types';
 import { Gallery } from './Gallery';
 import { PurchasePanel } from './PurchasePanel';
-import { uniqueOptions, resolveVariant } from '@/lib/commerce';
+import { pickDefaultVariant, resolveVariant } from '@/lib/commerce';
 import { useCart } from '@/store/cart';
 import { useUI } from '@/store/ui';
 import { toast } from '@/store/toast';
 import { currency } from '@/lib/site';
 
 export function ProductDetailClient({ product }: { product: Product }) {
-  const { volumes, intensities } = uniqueOptions(product);
-  const [volume, setVolume] = useState<VariantVolume>(volumes[0] as VariantVolume);
-  const [intensity, setIntensity] = useState<VariantIntensity>(intensities[0] as VariantIntensity);
+  const initialVariant = pickDefaultVariant(product);
+  const [volume, setVolume] = useState<VariantVolume>(initialVariant.volume);
+  const [intensity, setIntensity] = useState<VariantIntensity>(initialVariant.intensity);
   const [qty, setQty] = useState(1);
 
   const variant = useMemo(

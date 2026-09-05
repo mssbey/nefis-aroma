@@ -15,7 +15,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/hakkimizda',
     '/sss',
     '/iletisim',
-    '/favoriler',
     '/gizlilik-politikasi',
     '/mesafeli-satis-sozlesmesi',
     '/iade-ve-teslimat',

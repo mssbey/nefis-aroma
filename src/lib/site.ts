@@ -5,7 +5,7 @@
 export const site = {
   name: 'Nefis Aroma',
   shortName: 'Nefis Aroma',
-  domain: 'https://nefisaroma.example', // placeholder — gerçek alan adıyla değiştirin
+  domain: process.env.NEXT_PUBLIC_SITE_URL || 'https://nefisaroma.example', // placeholder — gerçek alan adıyla değiştirin
   description:
     'Özenle geliştirilen aroma profilleri, DIY kitleri ve baz ürünleri. Her damlasında yeni bir deneyim.',
   locale: 'tr_TR',

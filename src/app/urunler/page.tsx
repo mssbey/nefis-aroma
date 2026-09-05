@@ -15,7 +15,7 @@ export default function AllProductsPage() {
   return (
     <div className="container-page section !pt-8">
       <Breadcrumbs items={[{ label: 'Tüm Aromalar' }]} />
-      <h1 className="mt-4 text-display-sm">Tüm Aromalar</h1>
+      <div className="page-intro mt-5"><h1 className="mt-4 text-display-sm">Tüm Aromalar</h1></div>
       <p className="mt-2 max-w-2xl text-ink-soft">
         {products.length} üründen oluşan kataloğumuzda kategoriye, tat profiline, forma ve fiyata göre filtreleyerek
         aradığınız aromayı bulun.

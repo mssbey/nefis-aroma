@@ -23,7 +23,7 @@ export function FlavorExplorer() {
     () =>
       products
         .filter((p) => p.flavorProfiles.includes(active))
-        .sort((a, b) => b.rating - a.rating)
+        .sort((a, b) => Number(b.featured) - Number(a.featured))
         .slice(0, 4),
     [active],
   );

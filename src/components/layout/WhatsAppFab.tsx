@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { site } from '@/lib/site';
+
 
 export function WhatsAppFab() {
   const [show, setShow] = useState(false);
@@ -18,15 +18,15 @@ export function WhatsAppFab() {
     <AnimatePresence>
       {show && (
         <m.a
-          href={site.contact.whatsappUrl}
-          target="_blank"
+          href="/iletisim"
+          
           rel="noopener noreferrer"
           aria-label="WhatsApp destek hattı"
           initial={{ opacity: 0, scale: 0.6, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.6, y: 20 }}
           transition={{ type: 'spring', stiffness: 320, damping: 22 }}
-          className="fixed bottom-[calc(72px+env(safe-area-inset-bottom))] right-4 z-[90] grid h-13 w-13 place-items-center rounded-full bg-[#25D366] text-white shadow-lift lg:bottom-6"
+          className="fixed bottom-[calc(154px+env(safe-area-inset-bottom))] right-4 z-[90] grid h-13 w-13 place-items-center rounded-full bg-purple-600 text-white shadow-lift lg:bottom-6"
           style={{ height: 52, width: 52 }}
         >
           <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden>

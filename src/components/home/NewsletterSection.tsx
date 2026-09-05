@@ -14,11 +14,10 @@ export function NewsletterSection() {
                 <Mail size={20} strokeWidth={1.6} />
               </span>
               <h2 className="mt-4 font-display text-2xl font-semibold text-purple-900 sm:text-3xl">
-                Yeni profillerden ilk sen haberdar ol
+                Yeni tatlara açık bir not.
               </h2>
               <p className="mt-2 max-w-md text-sm text-ink-soft">
-                Yeni aromalar, sınırlı seriler ve kampanyalar için ara sıra e-posta gönderiyoruz.
-                İstediğin an çıkabilirsin.
+                Bülten formunu deneyebilirsin. Bu demo sürümde abonelik oluşturulmaz ve e-posta gönderilmez.
               </p>
             </div>
             <NewsletterForm variant="light" />

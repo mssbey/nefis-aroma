@@ -10,6 +10,7 @@ interface RatingProps {
 }
 
 export function Rating({ value, count, size = 15, className, showValue = true }: RatingProps) {
+  if (value <= 0) return null;
   const rounded = Math.round(value * 2) / 2;
   return (
     <div className={cn('flex items-center gap-1.5', className)}>

@@ -49,7 +49,7 @@ export function SearchResults() {
 
       {products.length > 0 && (
         <div className="mt-8">
-          <ProductBrowser baseProducts={products} />
+          <ProductBrowser key={q} baseProducts={products} />
         </div>
       )}
     </>

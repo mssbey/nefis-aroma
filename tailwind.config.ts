@@ -22,7 +22,8 @@ const config: Config = {
           600: '#672779', // ana mor
           700: '#4E2160',
           800: '#2B1035', // koyu mor
-          900: '#140B19', // gece moru
+          900: '#241329',
+          950: '#180c1d', // gece moru
         },
         gold: {
           50: '#FBF3E1',
@@ -30,11 +31,11 @@ const config: Config = {
           200: '#F2C45E', // açık altın
           300: '#E4AC34',
           400: '#D2940B', // ana altın
-          500: '#B87D0A',
-          600: '#8F6108',
+          500: '#7B5209',
+          600: '#7B5209',
           700: '#5F4106',
         },
-        cream: '#FAF8F4',
+        cream: '#FAF7F2',
         ink: '#211923',
         'ink-soft': '#5A4E60',
       },

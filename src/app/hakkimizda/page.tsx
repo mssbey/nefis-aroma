@@ -18,7 +18,7 @@ export default function AboutPage() {
     <div>
       <section className="surface-dark relative overflow-hidden">
         <div className="grain absolute inset-0" aria-hidden />
-        <Image src="/images/about/1.webp" alt="" fill sizes="100vw" priority className="object-cover opacity-40" />
+        <Image src="/images/nefisaroma/hero/aroma-dunyasi.webp" alt="" fill sizes="100vw" priority className="object-cover opacity-40" />
         <div className="absolute inset-0 bg-gradient-to-r from-purple-900 via-purple-900/85 to-purple-900/45" />
         <div className="container-page relative py-20 sm:py-28">
           <Breadcrumbs items={[{ label: 'Hakkımızda' }]} className="[&_*]:text-cream/70 [&_span[aria-current]]:text-cream" />
@@ -41,7 +41,7 @@ export default function AboutPage() {
             />
           </Reveal>
           <Reveal delay={0.1} className="relative aspect-[4/3] overflow-hidden rounded-[var(--radius-card)]">
-            <Image src="/images/about/2.webp" alt="" fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover" />
+            <Image src="/images/nefisaroma/story/aroma-atolyesi.webp" alt="" fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover" />
           </Reveal>
         </div>
       </section>

@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   applicationName: site.name,
   keywords: ['aroma', 'esans', 'DIY kit', 'nbase', 'aroma konsantresi', 'Nefis Aroma'],
   authors: [{ name: site.name }],
-  alternates: { canonical: '/' },
+  
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: 'Nefis Aroma — Her Damlasında Yeni Bir Deneyim',
     description: site.description,
-    images: [{ url: '/images/og.webp', width: 1200, height: 630, alt: 'Nefis Aroma' }],
+    images: [{ url: '/images/nefisaroma/hero/aroma-dunyasi.webp', width: 1600, height: 1067, alt: 'Nefis Aroma' }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#140B19',
+  themeColor: '#FAF7F2',
   colorScheme: 'light',
   width: 'device-width',
   initialScale: 1,

@@ -27,7 +27,7 @@ export default function FaqPage() {
     <div className="container-page section !pt-8">
       <JsonLd data={jsonLd} />
       <Breadcrumbs items={[{ label: 'Sıkça Sorulan Sorular' }]} />
-      <h1 className="mt-4 text-display-sm">Sıkça Sorulan Sorular</h1>
+      <div className="page-intro mt-5"><h1 className="mt-4 text-display-sm">Sıkça Sorulan Sorular</h1></div>
       <p className="mt-2 max-w-2xl text-ink-soft">
         Aradığınız cevabı bulamazsanız <a href="/iletisim" className="font-semibold text-purple-700 link-underline">iletişim</a> sayfasından bize ulaşabilirsiniz.
       </p>

@@ -1,13 +1,12 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { AnimatePresence, m, useReducedMotion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { Plus, Eye } from 'lucide-react';
 import type { Product } from '@/types';
 import { Price } from '@/components/ui/Price';
-import { Rating } from '@/components/ui/Rating';
 import { BadgeStack } from '@/components/ui/Badge';
 import { FlavorTag } from '@/components/ui/FlavorTag';
 import { FavoriteButton } from './FavoriteButton';
@@ -29,9 +28,6 @@ export function ProductCard({
   priority?: boolean;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
   const [panelOpen, setPanelOpen] = useState(false);
   const add = useCart((s) => s.add);
   const openCart = useUI((s) => s.openCart);
@@ -40,15 +36,6 @@ export function ProductCard({
   const defaultVariant = pickDefaultVariant(product);
   const soldOut = product.stockStatus === 'out-of-stock';
   const img2 = product.images[1]?.src ?? product.images[0].src;
-
-  const onMove = (e: React.MouseEvent) => {
-    if (reduce || !cardRef.current) return;
-    const r = cardRef.current.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
-    setTilt({ rx: -py * 4, ry: px * 5 });
-  };
-  const reset = () => setTilt({ rx: 0, ry: 0 });
 
   const doAdd = (variantId: string) => {
     add(product.id, variantId, 1);
@@ -66,16 +53,9 @@ export function ProductCard({
   const stock = stockLabel[product.stockStatus];
 
   return (
-    <m.article
-      ref={cardRef}
-      onMouseMove={onMove}
-      onMouseLeave={() => {
-        reset();
-        setPanelOpen(false);
-      }}
-      style={{ transform: `perspective(900px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)` }}
+    <article
       className={cn(
-        'group relative flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-purple-100 bg-white shadow-soft transition-shadow duration-300 hover:shadow-lift',
+        'product-card group relative flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-purple-100 bg-white shadow-soft transition-shadow duration-300 hover:shadow-lift',
         className,
       )}
     >
@@ -86,7 +66,7 @@ export function ProductCard({
             alt={product.name}
             fill
             sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
-            priority={priority}
+            preload={priority}
             className={cn(
               'object-cover transition-opacity duration-500',
               'group-hover:opacity-0',
@@ -115,7 +95,7 @@ export function ProductCard({
                 onQuickView(product);
               }}
               aria-label="Hızlı incele"
-              className="grid h-9 w-9 place-items-center rounded-full bg-white/90 text-purple-700 opacity-0 shadow-soft backdrop-blur transition-all duration-300 hover:text-purple-900 group-hover:opacity-100"
+              className="grid h-9 w-9 place-items-center rounded-full bg-white/90 text-purple-700 opacity-100 shadow-soft backdrop-blur transition-all duration-300 hover:text-purple-900 group-hover:opacity-100"
             >
               <Eye size={17} />
             </button>
@@ -136,7 +116,7 @@ export function ProductCard({
       <div className="flex flex-1 flex-col p-4">
         <p className="text-[11px] font-semibold uppercase tracking-wide text-gold-500">{product.series}</p>
         <h3 className="mt-1 line-clamp-2 text-[15px] font-semibold leading-snug text-purple-900">
-          <Link href={`/urun/${product.slug}`} className="after:absolute after:inset-0 after:content-['']">
+          <Link href={`/urun/${product.slug}`} className="hover:text-purple-600">
             {product.name}
           </Link>
         </h3>
@@ -147,11 +127,9 @@ export function ProductCard({
           ))}
         </div>
 
-        <div className="mt-2.5">
-          <Rating value={product.rating} count={product.reviewCount} size={13} />
-        </div>
+        <p className="mt-3 text-[10px] text-ink-soft">Temsili görsel · Demo ürün</p>
 
-        <div className="mt-auto flex items-end justify-between gap-2 pt-3">
+        <div className="product-price-row mt-auto flex items-end justify-between gap-2 pt-3">
           <div>
             <Price price={defaultVariant.price} oldPrice={defaultVariant.oldPrice} size="md" />
             <p className={cn('mt-0.5 text-[11px] font-medium', stock.className)}>{stock.text}</p>
@@ -161,12 +139,12 @@ export function ProductCard({
             onClick={handleQuickAdd}
             disabled={soldOut}
             aria-label={singleVariant ? 'Sepete ekle' : 'Hızlı ekle'}
-            className="relative z-20 grid h-10 w-10 shrink-0 place-items-center rounded-full bg-purple-600 text-cream transition-all hover:bg-purple-700 hover:shadow-lift disabled:opacity-40"
+            className="relative z-20 flex h-10 shrink-0 items-center justify-center gap-1 px-3 rounded-full bg-purple-600 text-cream transition-all hover:bg-purple-700 hover:shadow-lift disabled:opacity-40"
           >
-            <Plus size={18} className={cn('transition-transform', panelOpen && 'rotate-45')} />
+            <span className="text-[11px] font-semibold">Ekle</span><Plus size={16} className={cn('transition-transform', panelOpen && 'rotate-45')} />
           </button>
         </div>
       </div>
-    </m.article>
+    </article>
   );
 }

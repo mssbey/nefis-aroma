@@ -12,3 +12,6 @@ next-env.d.ts
 wc-product-export-*.csv
 
 .vercel
+
+# Local visual QA and audit artifacts
+artifacts/

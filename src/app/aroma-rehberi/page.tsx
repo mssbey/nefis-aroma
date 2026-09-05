@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/aroma-rehberi' },
 };
 
-const images = ['/images/guide/1.webp', '/images/guide/2.webp', '/images/guide/3.webp', '/images/guide/4.webp'];
+const images = ['/images/nefisaroma/guide/tat-notalari.webp', '/images/nefisaroma/story/aroma-atolyesi.webp', '/images/nefisaroma/categories/mix.webp', '/images/nefisaroma/categories/ferah.webp'];
 
 export default function GuidePage() {
   return (
@@ -40,7 +40,7 @@ export default function GuidePage() {
               <div className="grid gap-6 sm:grid-cols-[1fr_1.4fr] sm:items-center">
                 {i % 2 === 0 ? (
                   <div className="relative order-2 aspect-[4/3] overflow-hidden rounded-2xl sm:order-1">
-                    <Image src={images[i % images.length]} alt="" fill sizes="(max-width:768px) 100vw, 400px" className="object-cover" />
+                    <Image src={images[i % images.length]} alt="Aroma rehberi için temsili kompozisyon" fill sizes="(max-width:768px) 100vw, 400px" className="object-cover" />
                   </div>
                 ) : null}
                 <div className={i % 2 === 0 ? 'order-1 sm:order-2' : ''}>

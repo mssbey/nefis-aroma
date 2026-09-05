@@ -1,12 +1,13 @@
 import puppeteer from 'puppeteer-core';
 
-const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
+import { findChrome } from './chrome-path.mjs';
+const CHROME = findChrome();
 const BASE = 'http://localhost:3111';
-const WIDTHS = [320, 375, 768, 1024, 1440];
+const WIDTHS = [360, 390, 768, 1024, 1440, 1920];
 const PAGES = [
   '/', '/urunler', '/kategori/meyveli', '/koleksiyon/purple-reserve',
   '/urun/purple-mirage', '/sepet', '/favoriler', '/aroma-rehberi',
-  '/hakkimizda', '/sss', '/iletisim', '/kampanyalar',
+  '/hakkimizda', '/sss', '/iletisim', '/kampanyalar', '/arama?q=mango', '/arama?q=zzzz', '/does-not-exist',
 ];
 
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new' });

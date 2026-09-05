@@ -7,7 +7,7 @@ import { formatDateTR } from '@/lib/utils';
 import { toast } from '@/store/toast';
 
 export function QASection({ productId, initial }: { productId: string; initial: QuestionAnswer[] }) {
-  const [items, setItems] = useState(initial);
+  const [items, setItems] = useState(initial.filter((item) => !item.demo));
   const [name, setName] = useState('');
   const [question, setQuestion] = useState('');
 
@@ -34,9 +34,10 @@ export function QASection({ productId, initial }: { productId: string; initial: 
   return (
     <section className="mt-16 border-t border-purple-100 pt-12">
       <h2 className="flex items-center gap-2 font-display text-xl font-semibold text-purple-900 sm:text-2xl">
-        <HelpCircle size={22} className="text-gold-400" /> Soru & Cevap
+        <HelpCircle size={22} className="text-gold-400" /> Soru & Cevap (demo)
       </h2>
 
+      <p className="mt-2 text-sm text-ink-soft">Bu formu deneyebilirsiniz; sorular sunucuya gönderilmez.</p>
       <form onSubmit={submit} className="mt-6 grid max-w-xl gap-3 rounded-2xl border border-purple-100 bg-white p-5">
         <div className="grid gap-3 sm:grid-cols-2">
           <input

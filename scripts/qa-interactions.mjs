@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer-core';
 
-const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
+import { findChrome } from './chrome-path.mjs';
+const CHROME = findChrome();
 const BASE = 'http://localhost:3111';
 
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new', args: ['--window-size=1440,900'] });
@@ -10,11 +11,13 @@ const errs = [];
 page.on('pageerror', (e) => errs.push('[pageerror] ' + e.message));
 page.on('console', (m) => { if (m.type() === 'error') errs.push('[console] ' + m.text()); });
 
+let failures = 0;
 const step = async (name, fn) => {
   try {
     await fn();
     console.log(`OK   ${name}`);
   } catch (e) {
+    failures++;
     console.log(`FAIL ${name} -> ${e.message}`);
   }
 };
@@ -34,7 +37,7 @@ await step('Arama overlay "/" ile açılıyor', async () => {
 });
 
 await step('Mega menü "Tüm Aromalar" hover ile açılıyor', async () => {
-  const link = await page.$x ? null : null;
+
   const handle = await page.evaluateHandle(() => {
     return [...document.querySelectorAll('a')].find((a) => a.textContent.trim() === 'Tüm Aromalar');
   });
@@ -60,7 +63,7 @@ await step('Ürün kartından hızlı sepete ekleme + mini sepet açılıyor', a
   const addBtn = await page.evaluateHandle(() => document.querySelector('article button[aria-label="Hızlı ekle"], article button[aria-label="Sepete ekle"]'));
   await addBtn.asElement().click();
   await new Promise((r) => setTimeout(r, 400));
-  const panelOpen = await page.evaluate(() => !!document.querySelector('button:has(svg)'));
+
   // Sepete ekle veya varyant paneli açılmış olmalı
   const cartOrPanel = await page.evaluate(() =>
     !!document.querySelector('[aria-label="Sepetiniz"]') || !!document.querySelector('button.btn-gold'),
@@ -134,5 +137,43 @@ await step('Filtre: kategori seçimi ürün sayısını değiştiriyor', async (
   if (!url.includes('kategori=tutun')) throw new Error('URL güncellenmedi: ' + url);
 });
 
+
+await step('Arama sıralaması arama terimini koruyor', async () => {
+  await page.goto(BASE + '/arama?q=mango', {waitUntil:'networkidle0'});
+  await page.select('select[aria-label="Sıralama"]','fiyat-artan');
+  await page.waitForFunction(()=>new URL(location.href).searchParams.has('sirala'));
+  if(new URL(page.url()).searchParams.get('q') !== 'mango') throw new Error('Arama terimi kayboldu');
+  if(!(await page.$eval('h1',e=>e.textContent)).includes('mango')) throw new Error('Sonuç başlığı kayboldu');
+});
+await step('Galeri thumbnail, tam ekran ve Escape çalışıyor', async () => {
+  await page.goto(BASE + '/urun/purple-mirage',{waitUntil:'networkidle0'});
+  await page.click('button[aria-label="Görsel 2"]');
+  await page.waitForFunction(()=>document.querySelector('button[aria-label="Görsel 2"]').getAttribute('aria-current') === 'true');
+  await page.click('button[aria-label="Tam ekran galeri"]');
+  await page.waitForSelector('[role="dialog"]',{visible:true});
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(()=>!document.querySelector('[role="dialog"]'));
+});
+await step('Sepet ürünü yenilemeden sonra korunuyor', async () => {
+  await page.goto(BASE + '/urun/purple-mirage',{waitUntil:'networkidle0'});
+  await page.click('button.btn-primary');
+  await page.waitForSelector('[aria-label="Sepetiniz"]',{visible:true});
+  await page.keyboard.press('Escape');
+  await page.goto(BASE + '/sepet',{waitUntil:'networkidle0'});
+  await page.reload({waitUntil:'networkidle0'});
+  const lines=await page.evaluate(()=>JSON.parse(localStorage.getItem('nefis-aroma-cart')).state.lines);
+  if(!lines.some(l=>l.productId==='purple-mirage' && l.qty>0)) throw new Error('Sepet korunmadı');
+  if(!(await page.$eval('main',e=>e.textContent)).includes('Purple Mirage')) throw new Error('Sepet ürünü görünmüyor');
+});
+await step('Hızlı inceleme açılıyor ve klavyeyle kapanıyor', async () => {
+  await page.goto(BASE + '/urunler',{waitUntil:'networkidle0'});
+  await page.click('button[aria-label="Hızlı incele"]');
+  await page.waitForSelector('[aria-label="Hızlı ürün önizleme"]',{visible:true});
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(()=>!document.querySelector('[aria-label="Hızlı ürün önizleme"]'));
+});
+
 console.log('\nKonsol hataları:', errs.length ? errs.join('\n') : '(yok)');
 await browser.close();
+process.exitCode = failures || errs.length ? 1 : 0;

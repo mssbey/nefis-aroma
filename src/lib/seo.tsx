@@ -9,16 +9,6 @@ export function organizationJsonLd() {
     name: site.name,
     url: site.domain,
     logo: `${site.domain}/brand/logo-full.png`,
-    // Not: iletişim bilgileri örnek/placeholder'dır.
-    contactPoint: [
-      {
-        '@type': 'ContactPoint',
-        contactType: 'customer support',
-        email: site.contact.email,
-        availableLanguage: ['Turkish'],
-      },
-    ],
-    sameAs: [site.social.instagram, site.social.youtube],
   };
 }
 
@@ -38,8 +28,6 @@ export function webSiteJsonLd() {
 }
 
 export function productJsonLd(product: Product) {
-  const prices = product.variants.map((v) => v.price);
-  const inStock = product.stockStatus !== 'out-of-stock';
   const catName = categories.find((c) => c.slug === product.category)?.name ?? 'Aroma';
   return {
     '@context': 'https://schema.org',
@@ -50,21 +38,6 @@ export function productJsonLd(product: Product) {
     sku: product.variants[0]?.sku,
     brand: { '@type': 'Brand', name: site.name },
     image: product.gallery.map((g) => `${site.domain}${g.src}`),
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: product.rating,
-      reviewCount: product.reviewCount,
-    },
-    offers: {
-      '@type': 'AggregateOffer',
-      priceCurrency: site.commerce.currency,
-      lowPrice: Math.min(...prices),
-      highPrice: Math.max(...prices),
-      offerCount: product.variants.length,
-      availability: inStock
-        ? 'https://schema.org/InStock'
-        : 'https://schema.org/OutOfStock',
-    },
   };
 }
 
@@ -85,7 +58,7 @@ export function JsonLd({ data }: { data: object }) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }}
     />
   );
 }
